@@ -1,10 +1,17 @@
 # Custom Android TV ROM toolkit
 
-For building a custom Android TV ROM (LineageOS) for a set-top box or projector, reusing its stock kernel and vendor files. Written for an agent or person with **no knowledge of the project this came from**. It was built from one real device, an Allwinner H723 projector. On any other device, expect differences.
+For building a custom Android TV ROM (LineageOS) for a set-top box or projector, reusing its closed-source vendor files, and its stock kernel where no open one fits. Written for an agent or person with **no knowledge of the project this came from**. It was built from one real device, an Allwinner H723 projector. On any other device, expect differences.
 
 **Your first priority is not to brick the device.** Read [`docs/00-SAFETY.md`](docs/00-SAFETY.md) before you run anything. The device this came from got stuck, and rescuing it took days.
 
 **New here? Start with [`QUICKSTART.md`](QUICKSTART.md).** If you're the person running this: [`docs/11-HOW-TO-USE.md`](docs/11-HOW-TO-USE.md). If you're an agent: continue reading, then `docs/00-SAFETY.md`.
+
+## Know this before you start
+
+- **The result isn't fully open source.** By default, this reuses the device's closed-source stock binaries: bootloader, TEE, kernel, drivers, GPU and media libraries, and any stock apps you keep. LineageOS runs on top of them. They can't be inspected or fixed, they get no security updates from LineageOS, and their licences may not let you share a finished image.
+- **Use a LineageOS or other open kernel when one fits the device.** The stock kernel is the fallback, and it's what the first device used, as no suitable kernel existed.
+
+Details and how to choose: [`docs/12-KERNEL-AND-CLOSED-SOURCE.md`](docs/12-KERNEL-AND-CLOSED-SOURCE.md). **Agents: tell the user this before starting work.**
 
 ## How long it takes
 
@@ -76,6 +83,7 @@ fastboot reboot
 | `docs/08-BUILD-ERRORS.md` | Every compile and packaging error, by stage, with fixes |
 | `docs/09-BRICK-RECOVERY.md` | **The device is stuck now:** diagnosing it, every route, and what to do afterwards |
 | `docs/10-SETUP-NEW-COMPUTER.md` | Hardware needed, preparing the drive, installing every tool on any Linux, moving to another computer, host problems |
+| `docs/12-KERNEL-AND-CLOSED-SOURCE.md` | What stays closed and what that means; choosing LineageOS, vendor, GKI, mainline or stock kernels |
 | `tools/` | The scripts below |
 | `templates/fallback/` | Boot watchdog, auto-fastbootd: failed boots return to fastboot on their own |
 | `templates/memory/` | zram and swap script, low-RAM properties |

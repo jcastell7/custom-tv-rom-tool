@@ -78,7 +78,8 @@ Do this while the stock ROM still works. Ask:
 3. **Is there a second identical unit?**
 4. **Is the data on it disposable?** Once they say yes, stop asking before each wipe.
 5. **Which apps must be preinstalled, and exact package names?** For paid apps, ask how they hold the license.
-6. **Is UART wired, or can it be?** Strongly recommended. Find out whether you can read their serial log: on the first project, the user ran `picocom` and I read its log file.
+6. **Do you understand this reuses closed-source binaries, and does open source matter to you?** Explain it using `docs/12`. It affects the kernel choice.
+7. **Is UART wired, or can it be?** Strongly recommended. Find out whether you can read their serial log: on the first project, the user ran `picocom` and I read its log file.
 
 Record the answers in `devices/<codename>/NOTES.md`.
 
@@ -110,7 +111,9 @@ Check for a shortcut before you build anything:
 - If the device is Treble-capable with a sane vendor, a GSI may save most of this work, though features like keystone would still need work.
 - Does the kernel's arch match the ROM you plan to build? `uname -m`, `ro.product.cpu.abilist`.
 
-This guide assumes reuse of the stock kernel and vendor blobs. It doesn't cover building a kernel.
+- **Is there a LineageOS or other open kernel for this chip?** Use one if it fits: see [`12-KERNEL-AND-CLOSED-SOURCE.md`](12-KERNEL-AND-CLOSED-SOURCE.md). Get the ROM working on the stock kernel first in any case, so you change one thing at a time.
+
+**Tell the user now what will stay closed source,** and what that means. Then let them choose. This guide's steps and times assume reuse of the stock kernel and vendor blobs.
 
 **Match the Android version as closely as you can.** The first device was stock Android 14 on LineageOS 21 (Android 14), and even that hit library mismatches between QPR versions.
 

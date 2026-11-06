@@ -2,6 +2,10 @@
 
 This guide is for you, the person running it. The quick version is in [`QUICKSTART.md`](../QUICKSTART.md).
 
+## What you end up with
+
+A LineageOS system on top of your device's **closed-source** stock binaries: bootloader, drivers, GPU libraries, often the kernel, and any stock apps you keep. You'll be running code nobody outside the manufacturer can inspect or fix, and LineageOS's updates don't reach it. A finished image may also not be legal to share. If that matters to you, read [`12-KERNEL-AND-CLOSED-SOURCE.md`](12-KERNEL-AND-CLOSED-SOURCE.md) first, as it covers open kernel options too.
+
 ## How it works
 
 An agent does most of the work: reading the device, building, fixing, flashing. You provide what it can't get itself: decisions, physical actions, and what you see on the screen. The toolkit provides its memory, since a new agent starts knowing nothing:
@@ -53,7 +57,7 @@ Use this toolkit to build a custom Android TV ROM for my device, codename mybox.
 Read CLAUDE.md, README.md and docs/00-SAFETY.md, then devices/mybox/INTAKE.md.
 
 Start with read-only steps only: check the computer, run preflight, and take a verified full backup.
-Then show me what you found, your recovery plan, and any questions.
+Then show me what you found, your recovery plan, which kernel you recommend and why (docs/12), what will stay closed source, and any questions.
 Don't flash anything until I've approved the plan.
 Keep devices/mybox/PROGRESS.md up to date.
 ```

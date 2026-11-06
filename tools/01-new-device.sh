@@ -30,6 +30,8 @@ Next action: fill in INTAKE.md, then run tools/00-check-host.sh
 - [ ] Way back 2 proven:
 - [ ] Recovery plan shown to the user
 - [ ] Stock features inventoried (docs/06)
+- [ ] User told what stays closed source (docs/12)
+- [ ] Kernel chosen, with the reason recorded: LineageOS / vendor / GKI / mainline / stock
 - [ ] Device tree created
 - [ ] First build done
 - [ ] Gate passes (50-gate.py)

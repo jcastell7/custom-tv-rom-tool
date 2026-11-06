@@ -10,6 +10,10 @@ Build with `tools/40-build.sh`. **Always go through `lunch`.** A hand-rolled `so
 
 Run builds in the background and wait for them. Incremental builds take 1–3 minutes here, full ones take hours. A wrapper that writes `rc=N` to a log makes it easy to tell when a build ended.
 
+## Kernel
+
+The examples below use the stock kernel as a prebuilt (`TARGET_PREBUILT_KERNEL`), with stock modules. **Prefer a LineageOS or other open kernel if one fits.** See [`12-KERNEL-AND-CLOSED-SOURCE.md`](12-KERNEL-AND-CLOSED-SOURCE.md), which also covers what stays closed source.
+
 ## The files you need
 
 ```
