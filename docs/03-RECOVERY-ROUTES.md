@@ -1,5 +1,7 @@
 # Ways back, and proving them
 
+> **⚠️ WARNING: this process could very well fully and permanently brick your device.** Only use it on a device you own and can afford to lose. It's provided as is, with no warranty, and **we accept no responsibility** for how it's used or what happens. Not affiliated with LineageOS in any way: we just use and recommend their work, so [please donate to them](https://lineageos.org/about/) when you can. Read [`../DISCLAIMER.md`](../DISCLAIMER.md).
+
 If a device is already stuck, go to [`09-BRICK-RECOVERY.md`](09-BRICK-RECOVERY.md).
 
 **The goal:** before the first flash, know exactly how you'd get this device back if a build fails at any stage, and have tested that route.

@@ -1,5 +1,7 @@
 # Custom Android TV ROM toolkit
 
+> **⚠️ WARNING: this process could very well fully and permanently brick your device.** Only use it on a device you own and can afford to lose. It's provided as is, with no warranty, and **we accept no responsibility** for how it's used or what happens. Not affiliated with LineageOS in any way: we just use and recommend their work, so [please donate to them](https://lineageos.org/about/) when you can. Read [`DISCLAIMER.md`](DISCLAIMER.md).
+
 For building a custom Android TV ROM (LineageOS) for a set-top box or projector, reusing closed-source stock files where no open or manufacturer alternative fits. Written for an agent or person with **no knowledge of the project this came from**. It was built from one real device, an Allwinner H723 projector. On any other device, expect differences.
 
 **Your first priority is not to brick the device.** Read [`docs/00-SAFETY.md`](docs/00-SAFETY.md) before you run anything. The device this came from got stuck, and rescuing it took days.
@@ -8,6 +10,7 @@ For building a custom Android TV ROM (LineageOS) for a set-top box or projector,
 
 ## Know this before you start
 
+- **It can fully brick the device.** See the warning above. Only use a device you can afford to lose.
 - **The result isn't fully open source.** By default, this reuses the device's closed-source stock binaries: bootloader, TEE, kernel, drivers, GPU and media libraries, and any stock apps you keep. LineageOS runs on top of them. They can't be inspected or fixed, they get no security updates from LineageOS, and their licences may not let you share a finished image.
 - **Stock isn't the only option.** For the kernel and each other closed part, check for an open source replacement, or something the manufacturer provides, such as source, an SDK or drivers. Use one when it fits, case by case. Stock is the fallback. The first device mixed all three, and kept its stock kernel as no suitable one was found.
 
@@ -68,6 +71,7 @@ fastboot reboot
 
 | Path | Contents |
 |---|---|
+| `DISCLAIMER.md` | **The risk of bricking, no warranty, no affiliation with LineageOS, and how to donate to them** |
 | `QUICKSTART.md` | The short version, with prompts to paste |
 | `CLAUDE.md`, `AGENTS.md` | Rules that agents load automatically |
 | `devices/<codename>/` | One device's intake form, progress and notes. Create with `tools/01-new-device.sh` |
@@ -155,3 +159,7 @@ Real logs, device backups and the intake form's answers contain this kind of dat
 6. **Keep notes for your device** in `devices/<codename>/`, and record each change and the reason for it, including what failed.
 7. **Don't assume hermes details apply.** Addresses, module names, chip names and partition names in these documents are examples.
 8. **Commit often, and save progress** in `devices/<codename>/PROGRESS.md`. Long work can be interrupted, and only files survive.
+
+## Credit
+
+This toolkit exists because of [LineageOS](https://lineageos.org) and its community. It isn't affiliated with them, and builds made with it are unofficial, so don't ask them for support. **Please [donate to LineageOS](https://lineageos.org/about/) when you can.**

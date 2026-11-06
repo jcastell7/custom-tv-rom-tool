@@ -9,6 +9,7 @@
 # Install the Magisk app with adb install as a USER app: it warns if it's a system app and it updates itself.
 set -euo pipefail
 . "$(dirname "$0")/common.sh"
+printf '\033[31m%s\033[0m\n' "WARNING: writing to a device can fully and permanently brick it. No warranty, and no responsibility accepted: see DISCLAIMER.md."
 [ $# -ge 3 ] || die "usage: $0 MAGISK_APK BOOT_IMAGE OUTPUT_IMAGE [ABI]"
 apk=$1 img=$2 out=$3 abi=${4:-armeabi-v7a}
 work=$(mktemp -d); trap 'rm -rf "$work"' EXIT

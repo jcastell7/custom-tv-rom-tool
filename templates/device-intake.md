@@ -2,6 +2,13 @@
 
 Fill in what you know, and leave the rest blank. "Don't know" is a fine answer: the agent can find most of it. Give this file to the agent.
 
+## Acknowledgement
+
+Read `DISCLAIMER.md`. Answer before anything is written to the device.
+- I understand this could fully and permanently brick this device, and I can accept losing it: (yes / no)
+- I understand there's no warranty, that the authors accept no responsibility, and that this is my own decision: (yes / no)
+- I understand this isn't affiliated with LineageOS, and builds are unofficial: (yes / no)
+
 ## The device
 - Brand and model:
 - What it is (TV box, projector, stick, TV):
@@ -23,7 +30,7 @@ Fill in what you know, and leave the rest blank. "Don't know" is a fine answer: 
 ## Rules for this device
 - Is the data on it disposable? May the agent wipe it without asking? (yes / ask each time)
 - May the agent reboot it and flash it without asking each time? (yes / ask each time)
-- Is it OK to risk this unit? (it's a spare / I need it working)
+- Is this unit a spare, or do you rely on it? If you need it working, **reconsider doing this at all**: (spare / I rely on it)
 - Things the agent must never do:
 
 ## What you want

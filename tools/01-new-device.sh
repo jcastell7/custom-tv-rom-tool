@@ -19,6 +19,7 @@ Current status: not started
 Next action: fill in INTAKE.md, then run tools/00-check-host.sh
 
 ## Checklist (see docs/01-FAST-PATH.md)
+- [ ] **User acknowledged the brick risk and no-responsibility terms in DISCLAIMER.md. Required before any write to the device**
 - [ ] Computer checked (00-check-host.sh: 0 FAIL)
 - [ ] Intake completed with the user
 - [ ] Preflight run (10-preflight.sh)
@@ -65,5 +66,6 @@ Record every change and why, including what failed. Say whether each claim is ve
 | When | Changed | Result | Next |
 |---|---|---|---|
 EOF
+echo "WARNING: this process could fully and permanently brick the device. There's no warranty and no responsibility accepted. See DISCLAIMER.md."
 echo "Created $D"
 echo "Next: fill in $D/INTAKE.md, then see QUICKSTART.md"

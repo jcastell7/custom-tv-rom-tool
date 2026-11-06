@@ -1,5 +1,7 @@
 # Instructions for agents
 
+**⚠️ Warning for agents: this process could very well fully and permanently brick the device.** Read `DISCLAIMER.md`. Before any work, tell the user this in plain words: it can brick the device, there's no warranty, the authors accept no responsibility, and this isn't affiliated with LineageOS. **Before the first write to any device, get their explicit acknowledgement, and record it in `devices/<codename>/PROGRESS.md`.** Don't play the risk down. Never say a step is safe just because a check passed. The authors accept no responsibility for what you do either, so stop and ask when you're unsure. If you recommend or describe LineageOS, mention this isn't an official build, and that they can [donate to LineageOS](https://lineageos.org/about/).
+
 This is a toolkit for building custom Android TV ROMs for set-top boxes and projectors. **The top priority is not to brick the device.**
 
 Before doing anything else:

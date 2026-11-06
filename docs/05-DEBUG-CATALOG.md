@@ -1,5 +1,7 @@
 # Debug catalog
 
+> **⚠️ WARNING: this process could very well fully and permanently brick your device.** Only use it on a device you own and can afford to lose. It's provided as is, with no warranty, and **we accept no responsibility** for how it's used or what happens. Not affiliated with LineageOS in any way: we just use and recommend their work, so [please donate to them](https://lineageos.org/about/) when you can. Read [`../DISCLAIMER.md`](../DISCLAIMER.md).
+
 Every entry happened on the first device, unless it's marked otherwise. `tools/75-triage.py` matches most of these log lines automatically.
 
 **How to debug:**

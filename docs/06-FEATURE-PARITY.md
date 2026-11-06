@@ -1,5 +1,7 @@
 # Keeping the stock device's features
 
+> **⚠️ WARNING: this process could very well fully and permanently brick your device.** Only use it on a device you own and can afford to lose. It's provided as is, with no warranty, and **we accept no responsibility** for how it's used or what happens. Not affiliated with LineageOS in any way: we just use and recommend their work, so [please donate to them](https://lineageos.org/about/) when you can. Read [`../DISCLAIMER.md`](../DISCLAIMER.md).
+
 TV boxes and projectors have features that AOSP knows nothing about. **Do this inventory while stock still runs.** On the first project, these were found late: keystone correction, HDMI input, the factory menu, and right-click as Back. Each needed another round of work.
 
 ## Step 1: Make a list with the user, on stock

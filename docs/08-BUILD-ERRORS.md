@@ -1,5 +1,7 @@
 # Every build error we hit
 
+> **⚠️ WARNING: this process could very well fully and permanently brick your device.** Only use it on a device you own and can afford to lose. It's provided as is, with no warranty, and **we accept no responsibility** for how it's used or what happens. Not affiliated with LineageOS in any way: we just use and recommend their work, so [please donate to them](https://lineageos.org/about/) when you can. Read [`../DISCLAIMER.md`](../DISCLAIMER.md).
+
 These all happened on the first device, in rough order. They're compiled from the project's notes (`reference/hermes/docs/09-build-commands.md`), the session's build logs, and the logs the user supplied. For errors on the device after flashing, see [`05-DEBUG-CATALOG.md`](05-DEBUG-CATALOG.md).
 
 **Where to find the real error:** the terminal only shows the end. Read `out/error.log`, or `zcat out/verbose.log.gz`. Look for the first `FAILED:` or `error:`. Text after it is often just fallout: `Device hermes not found`, for instance, follows any `dumpvars` failure.

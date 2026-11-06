@@ -1,6 +1,12 @@
 # How to use this toolkit
 
+> **⚠️ WARNING: this process could very well fully and permanently brick your device.** Only use it on a device you own and can afford to lose. It's provided as is, with no warranty, and **we accept no responsibility** for how it's used or what happens. Not affiliated with LineageOS in any way: we just use and recommend their work, so [please donate to them](https://lineageos.org/about/) when you can. Read [`../DISCLAIMER.md`](../DISCLAIMER.md).
+
 This guide is for you, the person running it. The quick version is in [`QUICKSTART.md`](../QUICKSTART.md).
+
+## The risk
+
+Before you start, decide whether you can accept losing this device entirely. Backups and checks lower the risk, but a device can still end up unrecoverable. An agent's confidence doesn't change that, and neither does a passing check. **The decision and its consequences are yours.** See [`DISCLAIMER.md`](../DISCLAIMER.md).
 
 ## What you end up with
 
@@ -54,7 +60,8 @@ Use the device's codename (`adb shell getprop ro.product.device`). Fill in `devi
 
 ```
 Use this toolkit to build a custom Android TV ROM for my device, codename mybox.
-Read CLAUDE.md, README.md and docs/00-SAFETY.md, then devices/mybox/INTAKE.md.
+Read CLAUDE.md, DISCLAIMER.md, README.md and docs/00-SAFETY.md, then devices/mybox/INTAKE.md.
+I understand this could fully brick the device, and that it's my own responsibility.
 
 Start with read-only steps only: check the computer, run preflight, and take a verified full backup.
 Then show me what you found, your recovery plan, which open source or manufacturer alternatives exist for the kernel and other closed parts (docs/12), what you recommend, what will stay closed source, and any questions.

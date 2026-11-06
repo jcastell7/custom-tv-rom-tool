@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# WARNING: flashing can fully and permanently brick a device, whatever checks pass. See DISCLAIMER.md.
 # Flashes a build from userspace fastboot (fastbootd) only. Refuses bootloader, GPT and per-device partitions by design.
 # Usage: 60-flash.sh --out PRODUCT_OUT --backup BACKUP_DIR --slot a [--images "vendor_boot init_boot boot dtbo vbmeta_vendor vbmeta_system vbmeta super"]
 #                    [--wipe] [--init-boot PATCHED_IMG] [--skip-gate] [--bootloader-fastboot]
@@ -7,6 +8,7 @@
 # Doesn't reboot unless the flash finished. Stops at the first failure, because a half-flashed device needs a person's decision.
 set -euo pipefail
 . "$(dirname "$0")/common.sh"
+printf '\033[31m%s\033[0m\n' "WARNING: writing to a device can fully and permanently brick it. No warranty, and no responsibility accepted: see DISCLAIMER.md."
 OUT=; BACKUP=; SLOT=; WIPE=0; INIT=; SKIPGATE=0; BLFB=0
 IMAGES="vendor_boot init_boot boot dtbo vbmeta_vendor vbmeta_system vbmeta super"
 while [ $# -gt 0 ]; do case $1 in

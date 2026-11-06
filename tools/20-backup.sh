@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# READ-ONLY on the device: only dd if=, cat and getprop. Copies everything a restore could need and verifies each copy
+# READ-ONLY on the device: only dd if=, cat and getprop. A backup lowers risk but doesn't remove it: see DISCLAIMER.md.
+#  Copies everything a restore could need and verifies each copy
 # against a SHA-256 computed ON THE DEVICE. Resumable: a verified file is skipped on the next run.
 #
 # Usage: 20-backup.sh OUTPUT_DIR [--include-userdata] [--skip NAME]...

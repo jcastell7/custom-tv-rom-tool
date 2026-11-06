@@ -1,8 +1,14 @@
 # Safety rules
 
+**⚠️ Warning for agents: this process could very well fully and permanently brick the device.** Read [`DISCLAIMER.md`](../DISCLAIMER.md). Before any work, tell the user this in plain words: it can brick the device, there's no warranty, the authors accept no responsibility, and this isn't affiliated with LineageOS. **Before the first write to any device, get their explicit acknowledgement, and record it in `devices/<codename>/PROGRESS.md`.** Don't play the risk down. Never say a step is safe just because a check passed. The authors accept no responsibility for what you do either, so stop and ask when you're unsure. If you recommend or describe LineageOS, mention this isn't an official build, and that they can [donate to LineageOS](https://lineageos.org/about/).
+
+> **⚠️ WARNING: this process could very well fully and permanently brick your device.** Only use it on a device you own and can afford to lose. It's provided as is, with no warranty, and **we accept no responsibility** for how it's used or what happens. Not affiliated with LineageOS in any way: we just use and recommend their work, so [please donate to them](https://lineageos.org/about/) when you can. Read [`../DISCLAIMER.md`](../DISCLAIMER.md).
+
 Read this before you run anything. These rules exist because the first device in this project got stuck: it wouldn't boot, and it had no fastboot the PC could see, no usable recovery, and no way to flash through its USB boot mode. It took days of reverse engineering to get it back ([`07-CASE-STUDY.md`](07-CASE-STUDY.md)). Nearly all of that was avoidable.
 
 ## The rules
+
+**These rules reduce the risk of bricking. They don't remove it.**
 
 **1. Back up first, fully, and verify it.** Run `tools/20-backup.sh`, then `tools/21-check-backup.py`. Copy the result to a second disk. Don't flash anything before this.
 
@@ -52,6 +58,7 @@ Read this before you run anything. These rules exist because the first device in
 ## When to stop and ask the user
 
 Stop, explain what you know, and let them decide, if:
+- the user hasn't yet acknowledged that this could brick the device;
 - a step might make the device unrecoverable;
 - the backup check reports a STOP item and you'd need to proceed anyway;
 - you're considering writing to anything on the never-flash list;

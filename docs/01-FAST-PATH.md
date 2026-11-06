@@ -1,5 +1,7 @@
 # The fast path
 
+> **⚠️ WARNING: this process could very well fully and permanently brick your device.** Only use it on a device you own and can afford to lose. It's provided as is, with no warranty, and **we accept no responsibility** for how it's used or what happens. Not affiliated with LineageOS in any way: we just use and recommend their work, so [please donate to them](https://lineageos.org/about/) when you can. Read [`../DISCLAIMER.md`](../DISCLAIMER.md).
+
 This is the order I'd use if I started over with what the first device taught me. The first project reached a working ROM after about 25 flashes, and most of them were preventable. Follow the phases in order. Don't skip a gate.
 
 The phase times below assume a build tree is already synced, and are rough. For the whole picture, see "How long it takes".
