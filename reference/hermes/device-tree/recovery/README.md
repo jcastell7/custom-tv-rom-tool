@@ -1,0 +1,1 @@
+The stock kernel modules that belonged in `root/` (USB, IR, display) aren't kept in this toolkit. To rebuild this tree, copy them from the device's own stock `vendor_boot` ramdisk or `vendor_dlkm`. The list is in `root/init.recovery.*.rc`.

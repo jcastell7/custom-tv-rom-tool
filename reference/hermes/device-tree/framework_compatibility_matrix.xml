@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Device framework compatibility matrix (hermes).
+
+    Declares the proprietary vendor HALs this projector advertises in its VINTF device manifest so
+    the VINTF build-time compatibility check (PRODUCT_ENFORCE_VINTF_MANIFEST=true) accepts them. These
+    are NOT in any AOSP/LineageOS framework compatibility matrix, so without this the build fails with
+    "instances are in the device manifest but not specified in framework compatibility matrix".
+
+    All marked optional="true": the generic framework does not REQUIRE them; they're vendor services
+    (TV middleware, sunxi display/graphics, DRM heap) the hardware may provide. Wired via
+    DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE in device.mk. Versions/interfaces copied verbatim from
+    the shipped vendor vintf fragments (proprietary/vendor/etc/vintf/manifest/*).
+-->
+<compatibility-matrix version="1.0" type="framework">
+    <hal format="hidl" optional="true">
+        <name>vendor.aw.homlet.tvsystem.tvserver</name>
+        <version>1.0</version>
+        <interface>
+            <name>ITvServer</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>vendor.display.config</name>
+        <version>1.0</version>
+        <interface>
+            <name>IDisplayConfig</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>vendor.sunxi.tv.graphics</name>
+        <version>1.0</version>
+        <interface>
+            <name>IDisplay</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>vendor.hardware.drmheapallocator</name>
+        <version>1</version>
+        <interface>
+            <name>IDrmHeapAllocator</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+</compatibility-matrix>

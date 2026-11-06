@@ -1,0 +1,3 @@
+#!/bin/sh
+# Blocks commits containing personal data. See tools/02-check-pii.py.
+exec python3 -I "$(git rev-parse --show-toplevel)/tools/02-check-pii.py" --staged

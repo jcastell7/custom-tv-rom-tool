@@ -1,0 +1,10 @@
+# Add to device.mk during bring-up. A failed boot then returns to fastbootd with no USB stick and no button combination.
+# REMOVE BEFORE ANY FINAL BUILD: the watchdog, auto-fastbootd, ro.adb.secure=0 and printk.devkmsg.
+PRODUCT_PACKAGES += fastbootd
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/rootdir/etc/init/bringup.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/bringup.rc
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/rootdir/bin/boot-watchdog.sh:$(TARGET_COPY_OUT_VENDOR)/bin/hermes-boot-watchdog.sh
+PRODUCT_VENDOR_PROPERTIES += ro.adb.secure=0
+# BoardConfig.mk:
+#   BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
+#   TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.<hardware>
+#   BOARD_BOOTCONFIG += androidboot.init_fatal_reboot_target=recovery

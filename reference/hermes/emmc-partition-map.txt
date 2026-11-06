@@ -1,0 +1,34 @@
+# eMMC GPT, printed by u-boot `part list mmc 2` via the USB stick (2026-11-05). Sectors are 512 bytes.
+# The region before sector 0x12000 is not in any partition. On Allwinner it normally holds the GPT and boot code.
+#
+#  n  start_lba   end_lba     name
+   1  0x00012000  0x00021fff  bootloader_a
+   2  0x00022000  0x00031fff  bootloader_b
+   3  0x00032000  0x000321ff  env_a
+   4  0x00032200  0x000323ff  env_b
+   5  0x00032400  0x000523ff  boot_a
+   6  0x00052400  0x000723ff  boot_b
+   7  0x00072400  0x000823ff  vendor_boot_a
+   8  0x00082400  0x000923ff  vendor_boot_b
+   9  0x00092400  0x000963ff  init_boot_a
+  10  0x00096400  0x0009a3ff  init_boot_b
+  11  0x0009a400  0x0059a3ff  super
+  12  0x0059a400  0x005a23ff  misc
+  13  0x005a2400  0x005a24ff  vbmeta_a
+  14  0x005a2500  0x005a25ff  vbmeta_b
+  15  0x005a2600  0x005a267f  vbmeta_system_a
+  16  0x005a2680  0x005a26ff  vbmeta_system_b
+  17  0x005a2700  0x005a277f  vbmeta_vendor_a
+  18  0x005a2780  0x005a27ff  vbmeta_vendor_b
+  19  0x005a2800  0x005a2bff  frp
+  20  0x005a2c00  0x005aa3ff  empty
+  21  0x005aa400  0x005b23ff  metadata
+  22  0x005b2400  0x005e23ff  treadahead
+  23  0x005e2400  0x005ea3ff  private
+  24  0x005ea400  0x005eb3ff  dtbo_a
+  25  0x005eb400  0x005ec3ff  dtbo_b
+  26  0x005ec400  0x005f43ff  media_data
+  27  0x005f4400  0x005fc3ff  customapp
+  28  0x005fc400  0x006043ff  Reserve0_a
+  29  0x00604400  0x0060c3ff  Reserve0_b
+  30  0x0060c400  0x00e8ffde  userdata

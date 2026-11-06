@@ -1,0 +1,66 @@
+diff --git a/bpf_progs/bpf_net_helpers.h b/bpf_progs/bpf_net_helpers.h
+index f3c7de513d..c223e9a595 100644
+--- a/bpf_progs/bpf_net_helpers.h
++++ b/bpf_progs/bpf_net_helpers.h
+@@ -16,6 +16,10 @@
+ 
+ #pragma once
+ 
++// hermes: the 32-bit ARM kernel requires JIT (BPF_JIT_ALWAYS_ON) and its JIT has no atomic instructions, so programs using them
++// fail to load with ENOTSUPP. Stock's vendor/etc/bpf-override/netd.o avoids them too. A lost count in a race is harmless here.
++#define __sync_fetch_and_add(ptr, val) (*(ptr) += (val))
++
+ #include <linux/bpf.h>
+ #include <linux/if_packet.h>
+ #include <stdbool.h>
+diff --git a/bpf_progs/netd.c b/bpf_progs/netd.c
+index 0fad7ecb6e..a15ef2f5ef 100644
+--- a/bpf_progs/netd.c
++++ b/bpf_progs/netd.c
+@@ -193,7 +193,8 @@ DEFINE_BPF_MAP_RO_NETD(data_saver_enabled_map, ARRAY, uint32_t, bool,
+                 int tcp_overhead = ip_overhead + sizeof(struct tcphdr) + 12;                     \
+                 int mss = mtu - tcp_overhead;                                                    \
+                 uint64_t payload = bytes - tcp_overhead;                                         \
+-                packets = (payload + mss - 1) / mss;                                             \
++                /* hermes: 32-bit ARM JIT has no 64-bit division. mss is 1428 or 1448, so use 2^24/mss. */ \
++                packets = ((payload + mss - 1) * (is_ipv6 ? 11749 : 11587)) >> 24;               \
+                 bytes = tcp_overhead * packets + payload;                                        \
+             }                                                                                    \
+             if (egress.egress) {                                                                 \
+@@ -670,7 +671,10 @@ static __always_inline inline uint8_t get_app_permissions(uint32_t uid) {
+      * user at install time so we only check the appId part of a request uid at
+      * run time. See UserHandle#isSameApp for detail.
+      */
+-    uint32_t appId = uid % AID_USER_OFFSET;  // == PER_USER_RANGE == 100000
++    // hermes: 32-bit ARM JIT has no 64-bit modulo. 42949 is 2^32/100000 rounded down, which leaves q at most 1 too low.
++    uint64_t q = ((uint64_t)uid * 42949) >> 32;
++    uint32_t appId = uid - q * AID_USER_OFFSET;  // AID_USER_OFFSET == PER_USER_RANGE == 100000
++    if (appId >= AID_USER_OFFSET) appId -= AID_USER_OFFSET;
+     uint8_t* permissions = bpf_uid_permission_map_lookup_elem(&appId);
+     // if UID not in map, then default to just INTERNET permission.
+     return permissions ? *permissions : BPF_PERMISSION_INTERNET;
+diff --git a/netbpfload/loader.cpp b/netbpfload/loader.cpp
+index d9d3b5067c..97955a52ff 100644
+--- a/netbpfload/loader.cpp
++++ b/netbpfload/loader.cpp
+@@ -1030,6 +1030,7 @@ static int loadCodeSections(const char* elfPath, vector<codeSection>& cs, const
+             if (isAtLeastKernelVersion(4, 14, 0))
+                 strlcpy(req.prog_name, cs[i].name.c_str(), sizeof(req.prog_name));
+             fd.reset(bpf(BPF_PROG_LOAD, req));
++            const int bpfProgLoadErrno = errno;  // hermes: errno may change while logging below
+ 
+             ALOGD("BPF_PROG_LOAD call for %s (%s) returned fd: %d (%s)", elfPath,
+                   cs[i].name.c_str(), fd.get(), (!fd.ok() ? std::strerror(errno) : "no error"));
+@@ -1045,6 +1046,12 @@ static int loadCodeSections(const char* elfPath, vector<codeSection>& cs, const
+                     ALOGW("failed program is marked optional - continuing...");
+                     continue;
+                 }
++                // hermes: the 32-bit kernel requires JIT (BPF_JIT_ALWAYS_ON) and can't JIT every program,
++                // failing with ENOTSUPP (524). Skip those instead of rebooting; see docs/12.
++                if (bpfProgLoadErrno == 524) {
++                    ALOGW("kernel can't support this program (ENOTSUPP) - skipping...");
++                    continue;
++                }
+                 ALOGE("non-optional program failed to load.");
+             }
+         }

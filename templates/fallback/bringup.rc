@@ -1,0 +1,35 @@
+# Bring-up safety net: failed boots end up in recovery, which enters fastbootd. TODO(production): remove this.
+on post-fs-data
+    # Console output to the 115200-baud UART blocks the kernel, enough to time out the Wi-Fi/Bluetooth chip scan (docs/12, FIX 16).
+    # Errors only from here on. Earlier boot stays fully logged for debugging; use logcat after this point.
+    write /proc/sys/kernel/printk 4
+    start hermes_boot_watchdog
+    start hermes_swap
+
+on property:sys.boot_completed=1
+    rm /metadata/hermes_bootcount
+    start hermes_wl_retry
+
+service hermes_boot_watchdog /vendor/bin/sh /vendor/bin/hermes-boot-watchdog.sh
+    class late_start
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:shell:s0
+
+service hermes_swap /vendor/bin/sh /vendor/bin/hermes-swap.sh
+    class late_start
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:shell:s0
+
+service hermes_wl_retry /vendor/bin/sh /vendor/bin/hermes-wl-retry.sh
+    class late_start
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:shell:s0

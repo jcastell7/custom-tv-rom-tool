@@ -1,0 +1,8 @@
+    start hermes_auto_fastbootd
+
+service hermes_auto_fastbootd /system/bin/sh -c "mkdir -p /tmp/hm; mount -t ext4 /dev/block/by-name/metadata /tmp/hm && { rm -f /tmp/hm/hermes_bootcount; umount /tmp/hm; }; sleep 4; setprop sys.usb.config none; sleep 1; setprop sys.usb.config fastboot"
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:shell:s0

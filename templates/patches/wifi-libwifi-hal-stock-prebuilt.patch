@@ -1,0 +1,43 @@
+diff --git a/libwifi_hal/Android.bp b/libwifi_hal/Android.bp
+index 9e75776fb..086eeaef5 100644
+--- a/libwifi_hal/Android.bp
++++ b/libwifi_hal/Android.bp
+@@ -205,16 +205,13 @@ wifi_cc_defaults {
+     },
+ }
+ 
+-cc_library_shared {
++// hermes: stock's libwifi-hal.so reads /vendor/etc/hwinfo.xml to find the chip's driver and vendor library (libwifi-hal-skw.so).
++// The AOSP build only reaches the fallback, which can't initialize the vendor function table (docs/12, FIX 13).
++cc_prebuilt_library_shared {
+     name: "libwifi-hal",
+     proprietary: true,
+     compile_multilib: "first",
+-    defaults: [
+-        "libwifi_hal_cflags_defaults",
+-        "libwifi_hal_vendor_deps_defaults", // shared_libs used by libwifi-hal-<vendor>
+-        "libwifi_hal_vendor_impl_defaults",
+-    ],
+-    local_include_dirs: ["include"],
++    srcs: ["libwifi-hal-stock.so"],
+     export_include_dirs: ["include"],
+     header_libs: ["libhardware_legacy_headers"],
+     export_header_lib_headers: ["libhardware_legacy_headers"],
+@@ -225,14 +222,8 @@ cc_library_shared {
+         "libnl",
+         "libutils",
+     ],
+-    srcs: [
+-        "driver_tool.cpp",
+-        "hal_tool.cpp",
+-    ],
+-    whole_static_libs: ["libwifi-hal-common"],
+-    // b/242259479 remove this
+-    sanitize: {
+-        cfi: true,
+-        integer_overflow: true,
++    strip: {
++        none: true,
+     },
++    check_elf_files: false,
+ }

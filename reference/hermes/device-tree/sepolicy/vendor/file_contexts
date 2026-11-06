@@ -1,0 +1,4 @@
+# Root mount points, labelled as on stock (docs/12, FIX 7).
+/customapp(/.*)?  u:object_r:customapp_file:s0
+/treadahead(/.*)? u:object_r:metadata_file:s0
+/Reserve0         u:object_r:vfat:s0

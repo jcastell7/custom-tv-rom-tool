@@ -1,0 +1,13 @@
+{
+  "abi": "armeabi-v7a",
+  "lib_dir": "arm",
+  "apps": [
+    {"name": "FDroid", "apk": "/path/to/F-Droid.apk"},
+    {"name": "VLC", "apk": "/path/to/org.videolan.vlc.apk"},
+    {"name": "StockTvInput", "apk": "/path/to/stock/VideoInputService.apk", "partition": "system", "privileged": true, "certificate": "platform"}
+  ],
+  "copies": [
+    {"src": "/path/to/stock/com.vendor.tv.jar", "dest": "system/framework/com.vendor.tv.jar"},
+    {"src": "/path/to/stock/com.vendor.tv.xml", "dest": "system/etc/permissions/com.vendor.tv.xml"}
+  ]
+}

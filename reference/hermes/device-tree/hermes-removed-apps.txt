@@ -1,0 +1,1 @@
+A build module whose overrides remove apps from the image. See Android.mk and docs/17.

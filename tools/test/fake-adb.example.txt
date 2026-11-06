@@ -1,0 +1,18 @@
+#!/bin/bash
+F=/tmp/<scratch>
+case "$1" in
+  get-state) echo device; exit 0 ;;
+  root|wait-for-device) exit 0 ;;
+  shell|exec-out) mode=$1; shift ;;
+  *) exit 1 ;;
+esac
+cmd="$*"
+cmd="${cmd//$F/}"
+cmd="${cmd//\/dev\/block/$F/dev/block}"
+cmd="${cmd//\/sys\/class\/block/$F/sys/class/block}"
+cmd="${cmd//\/proc\/partitions/$F/proc/partitions}"
+getprop() { echo '[ro.fake]: [1]'; }; dmesg() { :; }; id() { echo 0; }
+blockdev() { stat -Lc %s "$2"; }
+export -f getprop dmesg id blockdev
+if [ -n "${CORRUPT:-}" ] && [ "$mode" = exec-out ] && [[ "$cmd" == *vbmeta_a* ]] && [ ! -f $F/corrupted ]; then touch $F/corrupted; bash -c "$cmd" | head -c 1000000; exit; fi
+bash -c "$cmd"

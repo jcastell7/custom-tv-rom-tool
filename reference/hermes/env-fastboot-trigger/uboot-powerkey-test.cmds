@@ -1,0 +1,44 @@
+# uboot-powerkey-test.cmds
+#
+# Run these AT THE U-BOOT PROMPT (sunxi#), by hand, one line at a time, to check
+# whether a power-button env (env-powerkey-*.img) can work on THIS u-boot BEFORE
+# flashing it. Reaching the prompt needs working UART input (docs/11 section 5).
+#
+# CHECKS 1-4 must all pass. If any fails, do NOT flash a power-key env; see the
+# fallbacks in docs/14. Without hush in particular, the trigger fires on EVERY boot.
+# Nothing here is saved. Never run `saveenv`.
+
+# --- CHECK 1: is the hush parser present? (needed for `if ... fi`) --------
+# PASS = prints only "HUSH-OK". FAIL = "Unknown command 'if'" or similar.
+if true; then echo HUSH-OK; else echo HUSH-NO; fi
+
+# --- CHECK 2: does the `gpio` command exist and accept this pin? ----------
+# FAIL = "Unknown command 'gpio'" or an error about the pin or bank.
+gpio input PL4
+
+# --- CHECK 3: does the level change with the button? ----------------------
+# Read released, then hold the power button and read again. PASS = released
+# reads 1, held reads 0. If it never changes, the env trigger can't work.
+#   (power button released)
+gpio input PL4
+#   (power button held)
+gpio input PL4
+# The owner's target is holding it from the moment power is connected, so also
+# confirm the button is not needed for anything else during boot.
+
+# --- CHECK 4: is the exit status what the trigger relies on? --------------
+# Only prints; it does not enter fastboot. PASS = "HELD" when held, "RELEASED"
+# when released. If these are swapped, the trigger would fire on normal boots.
+if gpio input PL4; then echo HELD; else echo RELEASED; fi
+
+# --- CHECK 5: what does u-boot really use as bootcmd? ---------------------
+# The log line "update bootcmd" suggests u-boot rewrites it at boot. Compare this
+# with the stored value "run setargs_nand boot_normal". A difference means a custom
+# bootcmd may not survive; work out what changed before flashing anything.
+printenv bootcmd
+printenv slot_suffix
+
+# --- OPTIONAL: for a recovery target, confirm the installed ROM has one ---
+# Stock has one, our current LineageOS build does not (docs/12). This boots right
+# away and does not change anything stored:
+#   setenv force_normal_boot 0; boot

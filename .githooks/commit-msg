@@ -1,0 +1,14 @@
+#!/bin/sh
+# Blocks personal data in commit messages: this computer's identity is checked with the same scanner.
+python3 -I - "$1" <<'PY'
+import getpass, re, subprocess, sys
+msg = open(sys.argv[1], errors="replace").read()
+bad = re.search(r"/(?:home|media|Users)/[a-z]|claude\.ai/code/session_", msg)
+ids = {getpass.getuser()}
+for k in ("user.name", "user.email"):
+    ids |= set(re.split(r"[\s@.]+", subprocess.run(["git", "config", "--global", k], capture_output=True, text=True).stdout.strip()))
+ids = {i for i in ids if len(i) >= 4 and i.lower() not in ("gmail", "noreply", "custom", "tool")}
+if bad or any(re.search(r"(?<![A-Za-z0-9])" + re.escape(i) + r"(?![A-Za-z0-9])", msg, re.I) for i in ids):
+    print("Commit message contains a personal path or identity. Rewrite it.")
+    sys.exit(1)
+PY

@@ -1,0 +1,12 @@
+sunxi_addr.ko
+sunxi-ve.ko
+sunxi_tvtop.ko
+backlight.ko
+pwm_bl.ko
+tvpanel.ko
+panel_lvds_gen.ko
+panel_dsi_gen.ko
+sunxi_ksc.ko
+bootevent.ko
+hidtvreg_dev.ko
+sunxi_tvtop_adc.ko

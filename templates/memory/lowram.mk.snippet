@@ -1,0 +1,8 @@
+# For devices with 2 GB of RAM or less. Don't copy stock's ro.lmk.* values: see docs/05.
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.config.low_ram=true \
+    ro.lmk.use_new_strategy=true \
+    ro.lmk.use_psi=true \
+    ro.lmk.thrashing_limit=100 \
+    dalvik.vm.heapgrowthlimit=128m
+# Copy the swap script and start it from a post-fs-data service, as templates/fallback/bringup.rc does for the watchdog.

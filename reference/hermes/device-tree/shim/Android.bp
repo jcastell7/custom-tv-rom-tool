@@ -1,0 +1,6 @@
+cc_library_shared {
+    name: "libhermes_wpa_shim",
+    vendor: true,
+    srcs: ["sk_dup.c"],
+    shared_libs: ["libcrypto"],
+}

@@ -1,0 +1,35 @@
+# Device backups and firmware: large, and they can hold MAC addresses, serial numbers and keys. Store them separately.
+*.img
+*.bin
+*.fex
+*.apk
+*.apex
+*.capex
+*.zip
+*.tar
+*.tar.gz
+*.xz
+*.lz4
+SHA256SUMS
+backup/
+backups/
+stock/
+device-report-*/
+boot-logs-*/
+
+# Logs can hold serial numbers, MAC addresses and email addresses. Share one on purpose if it's clean: git add -f.
+*.log
+
+# Device workspaces describe a real unit and its owner. Back them up privately.
+devices/*
+!devices/.gitkeep
+
+# Secrets
+adbkey
+adbkey.pub
+*.pem
+*.pk8
+.env
+
+__pycache__/
+*.pyc

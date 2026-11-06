@@ -1,0 +1,15 @@
+diff --git a/services/inputflinger/reader/mapper/accumulator/CursorButtonAccumulator.cpp b/services/inputflinger/reader/mapper/accumulator/CursorButtonAccumulator.cpp
+index 153236c177..ed3bbe20d1 100644
+--- a/services/inputflinger/reader/mapper/accumulator/CursorButtonAccumulator.cpp
++++ b/services/inputflinger/reader/mapper/accumulator/CursorButtonAccumulator.cpp
+@@ -84,7 +84,9 @@ uint32_t CursorButtonAccumulator::getButtonState() const {
+         result |= AMOTION_EVENT_BUTTON_PRIMARY;
+     }
+     if (mBtnRight) {
+-        result |= AMOTION_EVENT_BUTTON_SECONDARY;
++        // hermes: on this TV device the right mouse button acts as Back, for remotes with a trackpad. The cursor mapper
++        // turns BUTTON_BACK into KEYCODE_BACK.
++        result |= AMOTION_EVENT_BUTTON_BACK;
+     }
+     if (mBtnMiddle) {
+         result |= AMOTION_EVENT_BUTTON_TERTIARY;

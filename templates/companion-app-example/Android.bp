@@ -1,0 +1,11 @@
+// Launcher icon and boot tasks for stock's keystone app, which relied on changes in stock's framework (docs/18).
+android_app {
+    name: "HermesKeystone",
+    srcs: ["src/**/*.java"],
+    resource_dirs: ["res"],
+    platform_apis: true,
+    certificate: "platform",
+    optimize: {
+        enabled: false,
+    },
+}
