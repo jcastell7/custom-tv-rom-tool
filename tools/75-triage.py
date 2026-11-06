@@ -56,7 +56,7 @@ R = [
   "The build rewrote a presigned APK, most often because of LOCAL_PREBUILT_JNI_LIBS. Use LOCAL_REPLACE_PREBUILT_APK_INSTALLED and copy the libraries beside it. tools/80-apps.py does this."),
  (r"UnsatisfiedLinkError", "App can't load a native library",
   "Compressed JNI libraries aren't extracted for system apps. Check the app's lib/arm directory, or install it as a user app. GMS logs some harmless misses, such as libbrotli_native."),
- (r"lowmemorykiller: Kill '[^']+' \(\d+\), uid \d+, oom_score_adj (?:[0-9]|[0-9][0-9]|[12][0-9][0-9]) ", "lmkd killing foreground or visible apps",
+ (r"lowmemorykiller: Kill '[^']+' \(\d+\), uid \d+, oom_score_adj (?:[0-9]|[0-9][0-9]|1[0-9][0-9]|200) ", "lmkd killing foreground, visible or keyboard processes",
   "If swap is free, this is wrong. It's usually the old strategy: remove stock's ro.lmk.critical=1 and use ro.lmk.use_new_strategy=true. Symptoms: menus closing by themselves and sign-in failing."),
  (r"System UI isn't responding|ANR in ", "Apps not responding",
   "Often memory pressure plus a slow disk. Check MemAvailable and SwapTotal. If swap is 0, zram never started: its init trigger may depend on a stock-only property."),

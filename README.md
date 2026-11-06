@@ -105,7 +105,7 @@ fastboot reboot
 | `01-new-device.sh` | No | Create a device workspace | Yes |
 | `00-check-host.sh` | No | Hardware, tools and whether LineageOS is on a suitable drive with enough space | Yes: on the real tree, and it rejected tmpfs, too little space, a non-tree directory and no location |
 | `05-sync-lineage.sh` | No | Downloads LineageOS, after checking the location | Syntax only. The refusal path uses the tested check |
-| `10-preflight.sh` | Read-only | Report and go/no-go | Only its no-device refusal; the device was off `adb` during testing. Check its first run by eye |
+| `10-preflight.sh` | Writes nothing | Report and go/no-go | Yes, once on real hardware with a custom ROM, which found and fixed 2 bugs. Not yet on a stock ROM. It can show a root prompt on the device |
 | `20-backup.sh` | Read-only | Full backup, hash-verified on both sides | Against a simulated device (`tools/test/fake-adb.example.txt`): copies identical, resume, corrupted transfer, tampered file, no partitions. Based on a script used on the real device. **Not yet run in this form on real hardware, so check the first partitions by hand** |
 | `21-check-backup.py` | No | Completeness, and finding the bootloader | Yes, on the real backup |
 | `30-extract-stock.sh` | No | Unpack `super` to files | Yes, on the real `super` |

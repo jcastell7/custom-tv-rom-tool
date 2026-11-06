@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# READ-ONLY. Run first on any new device. Saves a device report and answers: is it safe to continue, and what must be backed up?
+# Writes nothing to storage. Run first on any new device. Its root check may restart adbd (adb root), and may pop up a root
+# prompt on the device's screen if a root app such as Magisk is installed: tell the user, and let them deny it if they prefer.
+# Saves a device report and answers: is it safe to continue, and what must be backed up?
 # Usage: 10-preflight.sh [OUTPUT_DIR]     Default output: ./device-report-<serial>/
 set -uo pipefail
 . "$(dirname "$0")/common.sh"
@@ -55,15 +57,18 @@ echo "=== Storage ==="
 awk 'NR>2 && $4!~/^(loop|ram|zram|dm-|sr)/ && $4!~/[0-9]p[0-9]+$/ && $4!~/^sd[a-z][0-9]+$/ {printf "%-16s %7d MiB\n",$4,$3/1024}' "$OUT/proc-partitions.txt"
 echo
 echo "=== Things to look for in stock before changing anything (docs/06) ==="
-grep -iE 'keystone|projector|focus|tvinput|hdmi|factory|video.?input|livetv|source' "$OUT/packages.txt" | sed 's/^package://' | cut -c1-100
+grep -iE 'keystone|projector|focus|tvinput|hdmi|factory|video.?input|livetv|awsource|tvsource|[._-]source\b' "$OUT/packages.txt" | grep -viE 'Resources|Font|/apex/' | sed 's/^package://' | cut -c1-100
 } | tee "$OUT/REPORT.txt"
 
 echo
 echo "=== Go / no-go ==="
 ok=1
-[ "$(p ro.boot.flash.locked)" = 1 ] && { red "STOP: bootloader looks locked (ro.boot.flash.locked=1)."; ok=0; }
+# These properties aren't reliable: a unit that flashes normally reported flash.locked=1 here. fastboot's answer is the one that counts.
+if [ "$(p ro.boot.flash.locked)" = 1 ]; then
+  yellow "CHECK: ro.boot.flash.locked=1 suggests a locked bootloader, but this property isn't always right. Before planning any flash, confirm in fastboot: fastboot getvar unlocked. If that says no, stop: unlocking usually wipes the device and may not be possible."
+fi
 [ "$ROOT_MODE" = none ] && { red "STOP: no root. A full backup needs root (or a root recovery). See docs/02."; ok=0; }
-[ "$(p ro.boot.verifiedbootstate)" = green ] && yellow "WARN: verifiedbootstate=green usually means locked. Confirm unlock before planning any flash."
+[ "$(p ro.boot.verifiedbootstate)" = green ] && yellow "CHECK: verifiedbootstate=green usually means locked. Confirm with: fastboot getvar unlocked"
 [ "$ROOT_MODE" = su ] && yellow "NOTE: root comes from su. The backup works, but check su still works from recovery if you rely on it."
 [ "$ok" = 1 ] && green "Continue to 20-backup.sh. Do NOT flash anything yet." || red "Fix the STOP items first."
 echo "Report saved in $OUT/. Read docs/03: you need a tested way back BEFORE the first flash."

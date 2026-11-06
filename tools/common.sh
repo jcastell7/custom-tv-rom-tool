@@ -12,7 +12,8 @@ die()   { red "ERROR: $*" >&2; exit 1; }
 # Runs a command on the device and strips the carriage returns adb can add.
 ash()   { $ADB shell "$@" 2>/dev/null | tr -d '\r'; }
 
-# Finds how to run commands as root. Sets ROOT_MODE to direct, su, or none. Never changes a device setting.
+# Finds how to run commands as root. Sets ROOT_MODE to direct, su, or none. Changes no setting, but `adb root` can restart adbd,
+# and `su` can show a prompt on the device if a root app is installed.
 detect_root() {
   ROOT_MODE=none
   [ "$(ash id -u)" = 0 ] && { ROOT_MODE=direct; return; }

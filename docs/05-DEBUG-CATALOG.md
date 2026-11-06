@@ -176,6 +176,7 @@ Every entry happened on the first device, unless it's marked otherwise. `tools/7
 
 ## Ways this project misled itself
 
+- **Properties can lie.** A unit that flashed normally reported `ro.boot.flash.locked=1`. Check with the thing that enforces it: `fastboot getvar unlocked`.
 - **"It built" isn't "it's installed".** A telephony change had no effect, and I claimed it had. Check the build output after each change.
 - **Trust the log, not the user-visible symptom.** "Keys don't work" was a display library. "Dim picture" was a black frame from an overloaded system.
 - **Copying stock isn't automatically right.** Stock's tuning made sense for stock's framework and apps.
