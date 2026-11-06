@@ -113,6 +113,7 @@ Every entry happened on the first device, unless it's marked otherwise. `tools/7
 |---|---|---|---|
 | Thrashing, load of 20–30 | `SwapTotal: 0`, `MemAvailable: 0` | zram never started: stock's rule waits on `vold.post_zram_writeback`, which AOSP's vold doesn't set | `templates/memory/swap.sh` |
 | Menus close by themselves, Google sign-in fails, swap free | `killinfo` with `min_oom=1`, reason `-1`; `lowmemorykiller: Kill` at `oom_score_adj` 100 or less | Stock's `ro.lmk.use_new_strategy=false` and `ro.lmk.critical=1`. The old strategy ignores swap | Remove those. `use_new_strategy=true`, `thrashing_limit=100` |
+| Apps killed with most of swap free, and the swap file unused | `low watermark is breached and swap is low (247348kB < 262140kB)`, while `SwapFree` is much larger | **Misleading message.** lmkd uses `min(free swap, free RAM + inactive file)`, against 10% of total swap. On low RAM, **more swap means more kills** | `ro.lmk.swap_free_low_percentage=3`. Fix on hermes awaiting a result |
 | Swap file not created | `fallocate: -l > 2147483647` | 32-bit toybox limit | Use 2147483647 |
 | Swap script fails on first boot | Runs before `/data/vendor` exists | Timing | Wait for the directory |
 | High RSS from a phone stack on a TV | `com.android.phone`, `cellbroadcast`, `imsserviceentitlement`, `smspush`, 42–46 MB each | `atv_base.mk` inherits telephony. Changing the top-level inherit does nothing | Override those modules: `templates/remove-apps/`. Verify in the build output |

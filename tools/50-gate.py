@@ -300,6 +300,9 @@ def check_props(a, O):
     for k, v in s.items():
         if IMPORTANT.match(k) and o.get(k, "") in ("",):
             fail(f"props.missing.{k}", f"{k}={v} is in stock's vendor build.prop but empty or absent here. Our build.prop is generated, not copied, and keymint aborts on an empty security_patch while the GPU needs ro.hardware.egl.")
+    swap_script = glob.glob(O + "vendor/bin/*swap*")
+    if swap_script and "ro.lmk.swap_free_low_percentage" not in o:
+        warn("props.lmk.swap", "the image adds swap, but ro.lmk.swap_free_low_percentage isn't set. lmkd compares easily reclaimable RAM with 10% of TOTAL swap, so a large swap on low RAM makes it kill with swap free. Consider 3.")
     missing = [k for k in s if k not in o]
     info(f"props: {len(missing)} stock vendor properties aren't set here. Review with care; don't copy them blindly.")
 

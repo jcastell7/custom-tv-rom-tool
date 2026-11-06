@@ -58,6 +58,8 @@ R = [
   "Compressed JNI libraries aren't extracted for system apps. Check the app's lib/arm directory, or install it as a user app. GMS logs some harmless misses, such as libbrotli_native."),
  (r"lowmemorykiller: Kill '[^']+' \(\d+\), uid \d+, oom_score_adj (?:[0-9]|[0-9][0-9]|1[0-9][0-9]|200) ", "lmkd killing foreground, visible or keyboard processes",
   "If swap is free, this is wrong. It's usually the old strategy: remove stock's ro.lmk.critical=1 and use ro.lmk.use_new_strategy=true. Symptoms: menus closing by themselves and sign-in failing."),
+ (r"low watermark is breached and swap is low", "lmkd says swap is low (check it really is)",
+  "Compare with SwapFree. lmkd uses min(free swap, free RAM + inactive file) against 10% of total swap, so a large swap on low RAM causes kills with swap free. Set ro.lmk.swap_free_low_percentage=3."),
  (r"System UI isn't responding|ANR in ", "Apps not responding",
   "Often memory pressure plus a slow disk. Check MemAvailable and SwapTotal. If swap is 0, zram never started: its init trigger may depend on a stock-only property."),
  (r"can't allocate .*swap|fallocate: -l", "Swap file not created",

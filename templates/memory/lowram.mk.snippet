@@ -4,5 +4,8 @@ PRODUCT_VENDOR_PROPERTIES += \
     ro.lmk.use_new_strategy=true \
     ro.lmk.use_psi=true \
     ro.lmk.thrashing_limit=100 \
+    ro.lmk.swap_free_low_percentage=3 \
     dalvik.vm.heapgrowthlimit=128m
 # Copy the swap script and start it from a post-fs-data service, as templates/fallback/bringup.rc does for the watchdog.
+# swap_free_low_percentage matters with a large swap: lmkd compares min(free swap, free RAM + inactive file) to this percentage of
+# TOTAL swap, so 10% of a big swap makes it kill while plenty of swap is free. See docs/05.
