@@ -18,6 +18,7 @@ Always:
 - Stop and ask before anything on the "stop and ask" list in `docs/00-SAFETY.md`.
 - Commit your work to this git repository as you go. Don't add a remote, or push, unless the user asks. Never force-add backups, logs or firmware without checking them for private data.
 - **Never write personal data into this repository:** names, usernames, home paths, emails, serial numbers, MAC or IP addresses, Wi-Fi names, account details. Use placeholders, and refer to people as "the user". `tools/02-check-pii.py` checks for this. Mask real values when you copy log lines into a doc.
+- **Never add manufacturer firmware or stock files to this repository.** It's free software under GPL-3.0. Keep them in `devices/` or outside the repository. See `NOTICE.md` and `CONTRIBUTING.md`.
 - Add new failures to `docs/05-DEBUG-CATALOG.md` or `docs/08-BUILD-ERRORS.md`, and to `tools/75-triage.py`.
 
 Device stuck right now: `docs/09-BRICK-RECOVERY.md`. Build failing: `docs/08-BUILD-ERRORS.md`. New computer: `docs/10-SETUP-NEW-COMPUTER.md`.

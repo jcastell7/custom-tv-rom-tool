@@ -177,7 +177,7 @@ The hook runs `tools/02-check-pii.py` before each commit, and blocks it if it fi
 
 **The scanner can't catch everything.** It finds patterns, like addresses and home paths, plus this computer's username and git identity, but not, say, a name written in a note. Read what you add, and check `git log -p` before you publish. Anything committed stays in the history.
 
-**Before you make it public:** `reference/hermes/` still holds a real device's stock SELinux policy, device tree and notes. They don't identify a person, but consider whether you can share them.
+**The toolkit is free software,** under the [GNU GPL version 3](../LICENSE), with no manufacturer firmware in it. Keep it that way: tools should get stock files from the user's own device. **Your device backups, `vendor/` tree and built images aren't covered,** and normally can't be shared. See [`NOTICE.md`](../NOTICE.md).
 
 ## Backing it up
 

@@ -33,3 +33,11 @@ adbkey.pub
 
 __pycache__/
 *.pyc
+
+# Manufacturer files must never be committed. See NOTICE.md.
+*.ko
+*.dtb
+*.dtbo
+precompiled_sepolicy
+proprietary/
+prebuilt/

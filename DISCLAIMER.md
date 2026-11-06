@@ -26,6 +26,8 @@ You're also responsible for following the laws, licences and terms that apply to
 
 **AI agents make mistakes.** The first project's agent made wrong claims and caused failures, some of them its own doing. Supervise agents, especially before any step that writes to a device.
 
+This repeats and adds to the no-warranty and liability terms in sections 15 and 16 of the [GNU GPL version 3](LICENSE) that covers this toolkit. [`NOTICE.md`](NOTICE.md) lists the third-party exceptions.
+
 ## Not affiliated with LineageOS
 
 **This toolkit isn't related to, affiliated with, endorsed by or supported by LineageOS or LineageOS LLC in any way,** other than using and recommending their work.

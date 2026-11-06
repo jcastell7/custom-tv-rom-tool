@@ -71,6 +71,7 @@ fastboot reboot
 
 | Path | Contents |
 |---|---|
+| `LICENSE`, `NOTICE.md` | GPL-3.0, and the third-party exceptions |
 | `DISCLAIMER.md` | **The risk of bricking, no warranty, no affiliation with LineageOS, and how to donate to them** |
 | `QUICKSTART.md` | The short version, with prompts to paste |
 | `CLAUDE.md`, `AGENTS.md` | Rules that agents load automatically |
@@ -95,7 +96,7 @@ fastboot reboot
 | `templates/patches/` | Tree patches for BPF, Bluetooth, Wi-Fi, right-click |
 | `templates/remove-apps/` | Removing inherited apps properly |
 | `templates/companion-app-example/` | Small system app: launcher icon and boot tasks for a stock tool |
-| `reference/hermes/` | The first device's device tree, docs, rescue stick, env tools and read-only donor extractor |
+| `reference/hermes/` | The first device's device tree, without its stock files, so it's for reading only, docs, rescue stick, env tools and read-only donor extractor |
 
 ## Tools
 
@@ -163,3 +164,7 @@ Real logs, device backups and the intake form's answers contain this kind of dat
 ## Credit
 
 This toolkit exists because of [LineageOS](https://lineageos.org) and its community. It isn't affiliated with them, and builds made with it are unofficial, so don't ask them for support. **Please [donate to LineageOS](https://lineageos.org/about/) when you can.**
+
+## License
+
+**Free and open source, under the [GNU GPL version 3](LICENSE).** A few third-party files keep their own licenses: see [`NOTICE.md`](NOTICE.md). No manufacturer firmware is included. **The ROM you build normally still contains closed-source binaries,** which this license doesn't cover. Contributions: [`CONTRIBUTING.md`](CONTRIBUTING.md).
