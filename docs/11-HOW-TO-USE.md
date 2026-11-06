@@ -4,7 +4,7 @@ This guide is for you, the person running it. The quick version is in [`QUICKSTA
 
 ## What you end up with
 
-A LineageOS system on top of your device's **closed-source** stock binaries: bootloader, drivers, GPU libraries, often the kernel, and any stock apps you keep. You'll be running code nobody outside the manufacturer can inspect or fix, and LineageOS's updates don't reach it. A finished image may also not be legal to share. If that matters to you, read [`12-KERNEL-AND-CLOSED-SOURCE.md`](12-KERNEL-AND-CLOSED-SOURCE.md) first, as it covers open kernel options too.
+A LineageOS system on top of your device's **closed-source** stock binaries: bootloader, drivers, GPU libraries, often the kernel, and any stock apps you keep. You'll be running code nobody outside the manufacturer can inspect or fix, and LineageOS's updates don't reach it. A finished image may also not be legal to share. Open source or manufacturer-provided alternatives can replace some of these, case by case. If that matters to you, read [`12-KERNEL-AND-CLOSED-SOURCE.md`](12-KERNEL-AND-CLOSED-SOURCE.md) first.
 
 ## How it works
 
@@ -57,7 +57,7 @@ Use this toolkit to build a custom Android TV ROM for my device, codename mybox.
 Read CLAUDE.md, README.md and docs/00-SAFETY.md, then devices/mybox/INTAKE.md.
 
 Start with read-only steps only: check the computer, run preflight, and take a verified full backup.
-Then show me what you found, your recovery plan, which kernel you recommend and why (docs/12), what will stay closed source, and any questions.
+Then show me what you found, your recovery plan, which open source or manufacturer alternatives exist for the kernel and other closed parts (docs/12), what you recommend, what will stay closed source, and any questions.
 Don't flash anything until I've approved the plan.
 Keep devices/mybox/PROGRESS.md up to date.
 ```
@@ -80,6 +80,7 @@ Put them in `devices/mybox/logs/`, or give the agent the path, rather than pasti
 | UART, continuously (best) | `picocom -b 115200 --logfile ~/uart.log /dev/ttyUSB0`. Tell the agent the path. It can read the log while you run it |
 | A short log | Paste it into the chat. Include the lines from before the failure, not only the end |
 | What's on screen | Say what you see. Screenshots from the device can differ from what the projector shows |
+| Manufacturer material you have | SDKs, source archives, firmware, or replies to a GPL request. Tell the agent, and give the path. It may change which parts have to stay closed |
 | Firmware or APKs | Put them in their own folder and give the path. If a site blocks the agent's download, you may have to download it yourself |
 | Earlier attempts and links | The last section of the intake form |
 

@@ -12,7 +12,7 @@ Run builds in the background and wait for them. Incremental builds take 1–3 mi
 
 ## Kernel
 
-The examples below use the stock kernel as a prebuilt (`TARGET_PREBUILT_KERNEL`), with stock modules. **Prefer a LineageOS or other open kernel if one fits.** See [`12-KERNEL-AND-CLOSED-SOURCE.md`](12-KERNEL-AND-CLOSED-SOURCE.md), which also covers what stays closed source.
+The examples below use the stock kernel as a prebuilt (`TARGET_PREBUILT_KERNEL`), with stock modules. **Prefer a LineageOS, other open, or manufacturer-provided kernel if one fits, and check the same for other closed parts.** See [`12-KERNEL-AND-CLOSED-SOURCE.md`](12-KERNEL-AND-CLOSED-SOURCE.md), which also covers what stays closed source.
 
 ## The files you need
 

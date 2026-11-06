@@ -4,7 +4,7 @@ For the person running this. Full guide: [`docs/11-HOW-TO-USE.md`](docs/11-HOW-T
 
 **You need:** a Linux PC, the device with USB debugging on, and a USB data cable. For building, also about 350 GB free on a local ext4 SSD. Plan on about 2–4 days overall, much of it unattended.
 
-**Know what you're getting:** the ROM is LineageOS on top of the device's **closed-source** stock binaries: bootloader, drivers, GPU libraries and usually the kernel. These can't be inspected or fixed, get no security updates from LineageOS, and may not be legal to redistribute. A LineageOS or other open kernel is used when one fits. See [`docs/12-KERNEL-AND-CLOSED-SOURCE.md`](docs/12-KERNEL-AND-CLOSED-SOURCE.md).
+**Know what you're getting:** the ROM is LineageOS on top of the device's **closed-source** stock binaries: bootloader, drivers, GPU libraries and usually the kernel. These can't be inspected or fixed, get no security updates from LineageOS, and may not be legal to redistribute. Where an open source or manufacturer-provided alternative fits, for the kernel or anything else, it can be used instead. See [`docs/12-KERNEL-AND-CLOSED-SOURCE.md`](docs/12-KERNEL-AND-CLOSED-SOURCE.md).
 
 ## 1. Check the computer (2 minutes)
 ```bash
@@ -25,7 +25,7 @@ Use this toolkit to build a custom Android TV ROM for my device, codename mybox.
 Read CLAUDE.md, README.md and docs/00-SAFETY.md, then devices/mybox/INTAKE.md.
 
 Start with read-only steps only: check the computer, run preflight, and take a verified full backup.
-Then show me what you found, your recovery plan, which kernel you recommend and why (docs/12), what will stay closed source, and any questions.
+Then show me what you found, your recovery plan, which open source or manufacturer alternatives exist for the kernel and other closed parts (docs/12), what you recommend, what will stay closed source, and any questions.
 Don't flash anything until I've approved the plan.
 Keep devices/mybox/PROGRESS.md up to date.
 ```

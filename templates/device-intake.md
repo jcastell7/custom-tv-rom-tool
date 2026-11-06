@@ -30,7 +30,8 @@ Fill in what you know, and leave the rest blank. "Don't know" is a fine answer: 
 - ROM base (default: LineageOS matching the stock Android version):
 - Android TV interface? (yes / no)
 - This reuses closed-source stock binaries (bootloader, drivers, GPU, usually the kernel). They can't be inspected or fixed, and get no LineageOS security updates. OK? (yes / no / explain more)
-- Kernel: (agent recommends / LineageOS or open kernel if possible, even if features are lost / keep stock, whatever is fastest)
+- Closed parts: (agent recommends case by case / prefer open source or manufacturer alternatives, even if features are lost / keep stock, whatever is fastest)
+- Manufacturer material you already have (SDK, source, firmware, support contacts):
 - Will you share the finished image with others? (no / yes: licences need checking)
 - Google Play? (no / yes, with sign-in optional / yes, required)
 - Root? (no / yes, what for)

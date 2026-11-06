@@ -7,7 +7,7 @@ Before doing anything else:
 2. If the user names a device, read `devices/<codename>/PROGRESS.md`, `INTAKE.md` and `NOTES.md`, and continue from there. If it has no folder, run `tools/01-new-device.sh <codename>`.
 3. Follow the order in `README.md`. Don't flash until a verified backup exists, two ways back are proven, and `tools/50-gate.py` has passed.
 
-4. **Tell the user before starting work** that the ROM reuses closed-source stock binaries, and check for a LineageOS or other open kernel for the chip. Both are covered in `docs/12-KERNEL-AND-CLOSED-SOURCE.md`. Let the user choose.
+4. **Tell the user before starting work** that the ROM reuses closed-source stock binaries, and check whether open source or manufacturer-provided alternatives exist, for the kernel and other closed parts. See `docs/12-KERNEL-AND-CLOSED-SOURCE.md`. Report what you checked, and let the user choose, case by case.
 
 Always:
 - Keep `devices/<codename>/PROGRESS.md` current, so another session can continue if this one stops.

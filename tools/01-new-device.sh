@@ -31,7 +31,7 @@ Next action: fill in INTAKE.md, then run tools/00-check-host.sh
 - [ ] Recovery plan shown to the user
 - [ ] Stock features inventoried (docs/06)
 - [ ] User told what stays closed source (docs/12)
-- [ ] Kernel chosen, with the reason recorded: LineageOS / vendor / GKI / mainline / stock
+- [ ] Alternatives checked for the kernel and each closed part: open source / manufacturer / stock. Decisions recorded in NOTES.md
 - [ ] Device tree created
 - [ ] First build done
 - [ ] Gate passes (50-gate.py)
@@ -56,6 +56,10 @@ Record every change and why, including what failed. Say whether each claim is ve
 ## Way-back plan
 | Boot stops at | Action | Tested? |
 |---|---|---|
+
+## Closed parts: what was chosen
+| Component | Choice (open / manufacturer / stock) | Why | What was checked | Works? |
+|---|---|---|---|---|
 
 ## Log of attempts
 | When | Changed | Result | Next |

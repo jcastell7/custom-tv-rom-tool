@@ -111,7 +111,7 @@ Check for a shortcut before you build anything:
 - If the device is Treble-capable with a sane vendor, a GSI may save most of this work, though features like keystone would still need work.
 - Does the kernel's arch match the ROM you plan to build? `uname -m`, `ro.product.cpu.abilist`.
 
-- **Is there a LineageOS or other open kernel for this chip?** Use one if it fits: see [`12-KERNEL-AND-CLOSED-SOURCE.md`](12-KERNEL-AND-CLOSED-SOURCE.md). Get the ROM working on the stock kernel first in any case, so you change one thing at a time.
+- **Are there open source or manufacturer-provided alternatives,** for the kernel or any other closed part? Search now, and use them where they fit: see [`12-KERNEL-AND-CLOSED-SOURCE.md`](12-KERNEL-AND-CLOSED-SOURCE.md). Apart from cheap swaps, replace them after the ROM works on stock parts, one at a time.
 
 **Tell the user now what will stay closed source,** and what that means. Then let them choose. This guide's steps and times assume reuse of the stock kernel and vendor blobs.
 

@@ -4,7 +4,7 @@
 
 ## This ROM isn't fully open source
 
-The toolkit's default approach keeps the device's stock kernel and vendor files, and builds open source LineageOS on top. **Parts of the result stay closed-source binaries that nobody can inspect or fix, supplied by the manufacturer and its suppliers.** "LineageOS" here doesn't mean an open device.
+The toolkit's default approach keeps the device's stock kernel and vendor files, unless an open or manufacturer alternative fits, and builds open source LineageOS on top. **Parts of the result stay closed-source binaries that nobody can inspect or fix, supplied by the manufacturer and its suppliers.** "LineageOS" here doesn't mean an open device.
 
 What the first device reused:
 
@@ -45,9 +45,74 @@ ls device/<vendor>/<codename>/prebuilt/modules | wc -l          # kernel modules
 
 **Getting a kernel's source:** Linux is GPL. A manufacturer distributing a device must generally provide the kernel source if asked, though compliance varies. Asking is reasonable: email the manufacturer or chip vendor with the model and kernel version from `/proc/version`. Don't plan on it arriving.
 
+## Alternatives for every closed part
+
+Reusing a stock binary is one option, not the only one. **For each closed component, check all three, and choose per component, case by case:**
+
+| Option | What it means | Usually best when |
+|---|---|---|
+| **Open source replacement** | AOSP's default, a LineageOS component, or a community project | It supports your hardware and the feature set you need |
+| **Provided by the manufacturer** | A GPL source release, SDK or BSP, a newer firmware or driver package, a documented update tool, or the chip vendor's published driver | It's for your exact model or chip, and you can actually get it |
+| **Reuse the stock binary** | Copy it from the device | Neither alternative exists, or the alternative loses a feature the user needs |
+
+**One device can mix all three,** and most will. The first device did, for example:
+- **Open source, from AOSP:** boot control HAL, composer service wrapper, audio HAL service, health HAL, `vndservicemanager`, Bluetooth stack, input and framework.
+- **Stock, because the open option failed:** Wi-Fi service and library. AOSP's version only had a stub for this chip, then crashed with the vendor library.
+- **Stock, as nothing open was found:** GPU libraries, display hardware layer, TV input, keymint, the kernel.
+
+### Component by component
+
+**This table is general knowledge and starting points, except where it mentions the first device.** Whether any entry works depends on the exact chip, and support changes. Check before you promise anything.
+
+| Component | Open source options to check | Manufacturer options to check | Notes |
+|---|---|---|---|
+| Bootloader | Mainline U-Boot, and the community port for your chip | SDK or BSP source | **Very high risk: don't replace it without a hardware recovery route.** Needs board-specific DRAM setup |
+| Secure firmware | Trusted Firmware-A, OP-TEE | BSP | Tied to the bootloader chain. On locked-down chips, only signed images run |
+| Kernel | See "Choosing a kernel" below | GPL source release | |
+| Wi-Fi and Bluetooth drivers | In-kernel drivers, community repositories for that chip | The chip vendor's published drivers, often on GitHub | Firmware files themselves usually stay closed. `linux-firmware` holds many |
+| GPU | Mesa: Panfrost or Panthor for many Mali chips, Lima for older ones, Freedreno for Adreno. `drm_hwcomposer` and `minigbm` on the Android side | A newer vendor driver package | Open drivers need a matching kernel, normally DRM. Vendor display stacks can conflict |
+| Display composer | `drm_hwcomposer` | BSP | Needs a DRM kernel driver. Features like keystone or HDMI-in overlays may be lost |
+| Video decoding | Android's software codecs (`c2.android.*`), VLC or FFmpeg in apps, V4L2 codec2 with an open kernel driver | Vendor codecs | Software decoding may not manage 4K, or even 1080p, on weak chips |
+| Audio | AOSP's default and `tinyalsa`-based HALs | BSP HAL | Usually needs device mixer paths |
+| KeyMint, Gatekeeper | AOSP software implementations | Vendor TEE apps | Software ones give weaker security, and hardware attestation is lost, which can affect some apps |
+| DRM (Widevine) | ClearKey only | Vendor | Generally has no open replacement. Streaming apps may fall back to lower quality or refuse to run |
+| Sensors, IR, power | AOSP defaults, kernel input drivers, plain `.kl` files | BSP | Often simple to replace |
+| Google apps | **microG**, F-Droid or Aurora Store for apps | None | Trades compatibility for openness. Android TV may have fewer options |
+| Launcher, setup, settings | LineageOS and AOSP ones | | Usually the easy wins |
+| Stock tools like keystone | Write a small open app that calls the HAL. Community tools | Manufacturer's app | The first device's keystone logic is a small HAL call, so an open replacement looks feasible, though the HAL remains closed |
+
+### Where to look for manufacturer material
+
+1. The product's support page: firmware, tools, source downloads.
+2. **The GPL offer.** Look in the device's legal settings, or the manual. Then email the manufacturer with the model and `/proc/version`. Say which version you need.
+3. The chip vendor's GitHub or developer site: SDKs, drivers.
+4. Board makers using the same chip. They often publish BSPs. They may differ from your board, so treat these as a reference.
+5. Community repositories and forums for the chip name, such as `linux-sunxi` for Allwinner.
+
+**Before using anything:**
+- It must be for your **exact model and revision** to flash. Anything else is reference only: wrong firmware can brick a device.
+- Check its source, and whether you trust it: treat unofficial mirrors with suspicion.
+- A newer vendor package may carry anti-rollback, or lock the bootloader. Read about it before flashing, and never let it update the bootloader without a plan.
+
+### How to decide
+
+For each component, ask:
+1. Is a feature the user listed in the intake form dependent on it?
+2. Is an open or manufacturer option available for this exact chip? Have you found evidence it works, not only that it exists?
+3. What would be lost? Performance, DRM, features.
+4. How much work and risk is it? Replacing an app is cheap, while replacing a GPU stack can take weeks.
+
+**Sensible order:** get the device working first, using whatever's fastest. Then replace components one at a time, with a test each time, starting with the cheapest: apps, then simple HALs, then drivers, and only then the kernel, GPU stack or bootloader. Replacing several at once means that when something breaks, you can't tell which caused it.
+
+**Record each decision** in `devices/<codename>/NOTES.md`:
+```
+Component | Choice (open / manufacturer / stock) | Why | What was checked | Works?
+```
+Tell the user what stayed closed, and what you tried. If you haven't checked for an alternative, say so.
+
 ## Choosing a kernel
 
-**Use a LineageOS or other open kernel when one suitably fits the device.** It gives you source, security fixes, and the ability to fix problems. Reuse the stock kernel when it doesn't.
+**Use a LineageOS, other open, or manufacturer-provided kernel source when one suitably fits the device.** It gives you source, and the ability to fix problems. Reuse the stock kernel when none does.
 
 ### The options
 
@@ -108,4 +173,4 @@ BOARD_KERNEL_IMAGE_NAME := zImage       # Image or Image.gz on 64-bit kernels. M
 | User cares most about open source or security | A, B or D. Warn that features may be lost, and that closed parts remain anyway unless the vendor stack is replaced too |
 | Device will sit on a network long-term | Prefer A or B. If it's E, isolate it on the network |
 
-**Changing the kernel doesn't make the device open source.** The vendor blobs, TEE and bootloader stay closed unless they're also replaced. Say that plainly.
+**Changing the kernel doesn't make the device open source.** The vendor blobs, TEE and bootloader stay closed unless they're also replaced. See "Alternatives for every closed part". Say that plainly.
