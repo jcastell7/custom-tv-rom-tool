@@ -2,7 +2,7 @@
 
 > **⚠️ WARNING: this process could very well fully and permanently brick your device.** Only use it on a device you own and can afford to lose. It's provided as is, with no warranty, and **we accept no responsibility** for how it's used or what happens. Not affiliated with LineageOS in any way: we just use and recommend their work, so [please donate to them](https://lineageos.org/about/) when you can. Read [`DISCLAIMER.md`](DISCLAIMER.md).
 
-For building a custom Android TV ROM (LineageOS) for a set-top box or projector, reusing closed-source stock files where no open or manufacturer alternative fits. Written for an agent or person with **no knowledge of the project this came from**. It was built from one real device, an Allwinner H723 projector. On any other device, expect differences.
+For building a custom Android TV ROM (LineageOS) for a set-top box or projector, reusing closed-source stock files where no open or manufacturer alternative fits. Written as a toolbox to connect agents to this devices and backup everything as thorough as possible, build an image flashable through fastboot, debug its functioning with the guidance from the user and help in failed statuses or failed boots. It was built from one real device, an Allwinner H723 projector. On any other device, expect differences.
 
 **Your first priority is not to brick the device.** Read [`docs/00-SAFETY.md`](docs/00-SAFETY.md) before you run anything. The device this came from got stuck, and rescuing it took days.
 
