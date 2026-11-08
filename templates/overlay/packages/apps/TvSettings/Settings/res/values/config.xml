@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Show the Bluetooth toggle. Without it, "Remotes and accessories" is an empty page whenever Bluetooth is off,
+     with no way to turn it back on. Only safe if the device has another input, such as an IR remote.
+     Use with PRODUCT_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay. See docs/13-TUNING.md, section 6. -->
+<resources>
+    <bool name="show_bluetooth_toggle">true</bool>
+</resources>

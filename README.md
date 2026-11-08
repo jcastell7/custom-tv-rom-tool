@@ -35,6 +35,7 @@ Details and how to choose: [`docs/12-KERNEL-AND-CLOSED-SOURCE.md`](docs/12-KERNE
 | 8 | Flash, watch, read the logs | [`docs/05`](docs/05-DEBUG-CATALOG.md) | `tools/60-flash.sh`, `tools/70-watch-boot.sh`, `tools/75-triage.py` |
 | 9 | Repeat 6–8 until it boots, then bring up hardware | | |
 | 10 | Add apps, then root if wanted | | `tools/80-apps.py`, `tools/81-fdroid-fetch.py`, `tools/90-root-patch.sh` |
+| 11 | **Tune:** measure, remove bring-up debug settings in two flashes, boot time, shutdown, power button | [`docs/13`](docs/13-TUNING.md) | `tools/76-boot-profile.py`, `77-shutdown-log.sh`, `78-boot-stacks.sh`, `tools/measure/` |
 
 **If the device is already stuck, stop and go straight to [`docs/09-BRICK-RECOVERY.md`](docs/09-BRICK-RECOVERY.md).** Build failed: [`docs/08`](docs/08-BUILD-ERRORS.md).
 
@@ -88,12 +89,15 @@ fastboot reboot
 | `docs/08-BUILD-ERRORS.md` | Every compile and packaging error, by stage, with fixes |
 | `docs/09-BRICK-RECOVERY.md` | **The device is stuck now:** diagnosing it, every route, and what to do afterwards |
 | `docs/10-SETUP-NEW-COMPUTER.md` | Hardware needed, preparing the drive, installing every tool on any Linux, moving to another computer, host problems |
+| `docs/13-TUNING.md` | After it works: removing debug settings safely, measuring and cutting boot and shutdown time, the power button, lamp and fan |
 | `docs/12-KERNEL-AND-CLOSED-SOURCE.md` | What stays closed and what that means; open source, manufacturer and stock options for each part, and choosing a kernel |
 | `tools/` | The scripts below |
 | `templates/fallback/` | Boot watchdog, auto-fastbootd: failed boots return to fastboot on their own |
 | `templates/memory/` | zram and swap script, low-RAM properties |
 | `templates/shim/` | Providing missing symbols, renaming colliding libraries, with `patchelf` |
-| `templates/patches/` | Tree patches for BPF, Bluetooth, Wi-Fi, right-click |
+| `templates/patches/` | Tree patches for BPF, Bluetooth, Wi-Fi, right-click, the power menu on a short press, a shorter boot animation |
+| `templates/power/` | Blocking suspend, lamp off at shutdown, swap file off at shutdown |
+| `templates/overlay/` | Resource overlays, such as the Bluetooth toggle in TvSettings |
 | `templates/remove-apps/` | Removing inherited apps properly |
 | `templates/companion-app-example/` | Small system app: launcher icon and boot tasks for a stock tool |
 | `reference/hermes/` | The first device's device tree, without its stock files, so it's for reading only, docs, rescue stick, env tools and read-only donor extractor |
@@ -118,6 +122,10 @@ fastboot reboot
 | `80-apps.py` | No | Preinstall APKs correctly | Yes, generation only; same logic as what built hermes |
 | `81-fdroid-fetch.py` | No | Download and hash-check from F-Droid | Syntax only. Same logic as what fetched the hermes apps |
 | `90-root-patch.sh` | Writes to `/data/local/tmp` only | Magisk patch | Same steps as the script that worked on hermes |
+| `76-boot-profile.py` | Read-only | Boot stages, slowest system_server and init steps, gaps, hints. `--save`/`--from` to compare builds | Yes, on saved logs from the real device; not run live, because the device was disconnected |
+| `77-shutdown-log.sh` | **Restarts twice**; writes a temporary script and a log file, both removed | Kernel log of one shutdown without a UART | Same steps as used on hermes, which measured its shutdown. The summary was tested on that real log. The script form wasn't run on the device |
+| `78-boot-stacks.sh` | **Restarts once**; writes a temporary script, removed | Stack traces at a chosen moment of boot | Same steps as used on hermes, which found the shader cache wait. The summary was tested on those real stacks. The script form wasn't run on the device |
+| `measure/*.sh` | `shutdown-timer.sh` powers the device off; the others send nothing | The user's own stopwatch for startup and power-off. Totals use only the user's key presses | `shutdown-timer.sh` and an early `startup-timer.sh` ran on hermes. The rest with simulated `adb` and `lsusb` |
 
 "Syntax only" means it hasn't been run in this exact form. Read those scripts, and expect to fix small things.
 
@@ -136,7 +144,7 @@ Tell the tools where the tree is by setting `LINEAGE_TREE`.
 
 ## This is a git repository
 
-It has no remote. **It must contain no personal data:** see "No personal data" below. Commit changes as you work: device notes, new checks and fixes. `.gitignore` keeps out images, APKs, device backups, logs and keys. Read the Git section of [`docs/11-HOW-TO-USE.md`](docs/11-HOW-TO-USE.md) before you push it anywhere.
+Don't add a remote or push unless the user asks. **It must contain no personal data:** see "No personal data" below. Commit changes as you work: device notes, new checks and fixes. `.gitignore` keeps out images, APKs, device backups, logs and keys. Read the Git section of [`docs/11-HOW-TO-USE.md`](docs/11-HOW-TO-USE.md) before you push it anywhere.
 
 ## No personal data
 

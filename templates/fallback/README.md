@@ -17,3 +17,8 @@ Add these from the very first build. They were verified on hardware: after a han
 **What this can't catch:** kernel panics and hangs before init. For those you need `androidboot.init_fatal_reboot_target=recovery` (for init failures only), and the routes in `docs/03-RECOVERY-ROUTES.md`.
 
 **Remove all of it before calling a build final.**
+
+## Removing all this
+
+Once the device boots and flashes reliably, and the user agrees, remove it in **two flashes**: first `printk.devkmsg=on` and `ro.adb.secure=0`, then the watchdog and auto-fastbootd. Keep `androidboot.init_fatal_reboot_target=recovery`, which costs nothing in normal use. Move the console quieting to `on early-init`. Full steps and reasons: [`docs/13-TUNING.md`](../../docs/13-TUNING.md), section 2.
+

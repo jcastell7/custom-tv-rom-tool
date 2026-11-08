@@ -21,4 +21,4 @@ Always:
 - **Never add manufacturer firmware or stock files to this repository.** It's free software under GPL-3.0. Keep them in `devices/` or outside the repository. See `NOTICE.md` and `CONTRIBUTING.md`.
 - Add new failures to `docs/05-DEBUG-CATALOG.md` or `docs/08-BUILD-ERRORS.md`, and to `tools/75-triage.py`.
 
-Device stuck right now: `docs/09-BRICK-RECOVERY.md`. Build failing: `docs/08-BUILD-ERRORS.md`. New computer: `docs/10-SETUP-NEW-COMPUTER.md`.
+Device boots and its features work: tune it with `docs/13-TUNING.md`. Device stuck right now: `docs/09-BRICK-RECOVERY.md`. Build failing: `docs/08-BUILD-ERRORS.md`. New computer: `docs/10-SETUP-NEW-COMPUTER.md`.

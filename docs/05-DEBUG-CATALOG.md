@@ -103,6 +103,8 @@ Every entry happened on the first device, unless it's marked otherwise. `tools/7
 | Apps missing after flash | `No APK Signature Scheme v2 signature` | The build rewrote the APK, because of `LOCAL_PREBUILT_JNI_LIBS` | `LOCAL_REPLACE_PREBUILT_APK_INSTALLED`, with libraries copied beside it |
 | App crashes on loading a library | `UnsatisfiedLinkError` | Compressed JNI isn't extracted for system apps | `lib/<arch>` beside the APK |
 | Black screen with audio after adding GApps | `ANR in ...setupwraith`, Google's setup video playing | Google's setup app on 1 GB of RAM, with no swap | Remove `SetupWraithPrebuilt`, and fix swap |
+| Boot is slow, with a long wait in system_server | `SystemServerTiming: WaitForDisplay took to complete: 9311ms` | Not the display: SurfaceFlinger's RenderEngine was in the Mali driver compiling shaders for cache priming (`cmpbe_v2_compile_multiple_shaders`), found with `tools/78-boot-stacks.sh` | `service.sf.prime_shader_cache=0`. See docs/13, 3b |
+| "Remotes and accessories" is an empty page | Only the title shows; Bluetooth is off (`dumpsys bluetooth_manager`: `state: OFF`) | TvSettings has `show_bluetooth_toggle` false, and the pair button needs Bluetooth on | `templates/overlay/`. Why Bluetooth was off on that boot wasn't found |
 | "Choose your home app" prompt | `ResolverActivity` on top | Phone `Settings` also declares HOME | Override `Settings`. Keep `TvSettings`, which provides the fallback home |
 
 **The setup wizard:** `LineageSetupWizard` handles first-run Wi-Fi, remote and language. It has no Google login, and it exits at once if Google's setup app is installed. Removing it was a mistake that the user caught. Keep it.
@@ -119,6 +121,16 @@ Every entry happened on the first device, unless it's marked otherwise. `tools/7
 | High RSS from a phone stack on a TV | `com.android.phone`, `cellbroadcast`, `imsserviceentitlement`, `smspush`, 42–46 MB each | `atv_base.mk` inherits telephony. Changing the top-level inherit does nothing | Override those modules: `templates/remove-apps/`. Verify in the build output |
 
 **Read memory correctly:** RSS double-counts shared pages. Use `MemAvailable`, `SwapFree` and `dumpsys meminfo`. Note that `dumpsys meminfo` can fail when `system_server` is busy.
+
+## Power, sleep and shutdown
+
+| Symptom | Evidence | Cause | Fix |
+|---|---|---|---|
+| Short press of power: picture black, lamp and fan still running | `mWakefulness=Asleep`, backlight `bl_power` 4, but the lamp is on | The lamp and fan have their own switches (`/sys/class/backlightandfan/*/value` on the first device). Stock's framework wrote them; AOSP doesn't | `templates/power/`. Find the switches in stock's `services.jar` with `dexdump` |
+| Device frozen after a short power press, with USB unplugged; only a power cut recovers | No log survived | Kernel suspend or resume failed. **Not proven** | Block suspend with a wake lock, and make the button open the power menu, as stock did (docs/13, section 5) |
+| Suspend never happens in tests | `suspend_stats` success 0, fail 0; wake source `usb_connecting` active | A connected USB cable holds a wake lock | You can't test deep sleep over USB. Test with it unplugged, and only when the user can power-cycle the device |
+| `blank_screen` exits with status 255 at shutdown | `init: Service 'blank_screen' ... exited with status 255`; `Could not find android.hardware.light.ILights` | No lights HAL | Harmless. Removing it didn't speed up shutdown (docs/13, 4c) |
+| Shutdown slower than expected | Timed from `svc power reboot` | `svc` starts a Java VM first, 0.3 to 3.6 s | Time from `ShutdownThread: Logging pre-reboot information`. See docs/13, section 1 |
 
 ## Wi-Fi and Bluetooth
 
@@ -157,7 +169,7 @@ Every entry happened on the first device, unless it's marked otherwise. `tools/7
 | Symptom | Likely causes, in order |
 |---|---|
 | Add-account menu closes | lmkd killing the flow (check first) |
-| "Account not found" | The flow's web process killed mid-way; a key layout mangling `@`; Play services out of date. **Not fully diagnosed on the first device** |
+| "Account not found" | The flow's web process killed mid-way; a key layout mangling `@`; Play services out of date. **Not diagnosed on the first device:** it failed several times, then worked with no change made to that flow. Check-in passed and the flow reached the email screen. Get logs from the failing attempt itself |
 | "Device isn't certified" | Register the GSF ID at google.com/android/uncertified |
 
 **Have the user test sign-in.** Don't handle their credentials. A typo-free address that works elsewhere means the device is at fault, not the account.
@@ -168,8 +180,10 @@ Every entry happened on the first device, unless it's marked otherwise. `tools/7
 |---|---|---|
 | Magisk warns about being a system app | It was bundled in the ROM | Remove it from the ROM, and `adb install` it |
 | Daemon runs, `su` missing | First-run setup may be incomplete | Open the Magisk app. It appeared at `/product/bin/su` on a later boot |
+| App asks for root, nothing appears, root denied | `su: request rejected (<uid>)` in `/cache/magisk.log`; no prompt | **Magisk 31.1 has no prompt** (read from its v31.1 source: a request with no stored policy is rejected). Not a missing stub: its patcher doesn't use one | Grant in Magisk's Superuser tab, or `magisk --sqlite "REPLACE INTO policies (uid,policy,until,logging,notification) VALUES(<uid>,2,0,1,1)"`. A wipe loses it |
+| `adb root` refused | `ADB Root access is disabled by system setting` | LineageOS's Rooted debugging toggle | Developer options, with the user's agreement |
 | Root gone after a flash | Full flash replaced `init_boot` | `60-flash.sh --init-boot PATCHED` |
-| AdAway can't write hosts | `/system` is read-only | Enable Systemless Hosts in Magisk (general knowledge; not yet confirmed on hermes) |
+| AdAway: "not enough space" when applying | Hosts file 2.37 MB; system partition 2.1 MB free | AdAway checks free space where `/system/etc/hosts` lives, the read-only system partition. **`/data` space plays no part**, so uninstalling apps doesn't help | A Magisk module `/data/adb/modules/hosts/` with `module.prop` and `system/etc/hosts` (what "Systemless Hosts" makes), then reboot. Verified mounted on the first device. That AdAway then applied its list wasn't confirmed when this was written |
 
 ## Screenshots and "black screen" reports
 
@@ -183,3 +197,6 @@ Every entry happened on the first device, unless it's marked otherwise. `tools/7
 - **Copying stock isn't automatically right.** Stock's tuning made sense for stock's framework and apps.
 - **Check whether your own earlier fix is the cause.** At least four failures here came from earlier fixes: the library fix installed Qualcomm's HAL, and the property copy brought BQR and old lmkd settings.
 - **Don't remove something you haven't read.** I removed the setup wizard on an assumption. The user caught it.
+- **Read the version's source before theorizing.** I blamed a missing `stub.apk` for Magisk denying root. Magisk 31.1 doesn't use one, and simply has no prompt.
+- **Change one thing per test.** To show that Bluetooth off empties the accessories page, I first opened the pairing activity, which turned Bluetooth back on and spoiled the test.
+- **Check what your tool measures.** `svc` startup inflated shutdown times; BusyBox `dmesg` lacked `-w`; `adb shell` lost quotes and broke an uptime read. Each gave a wrong number before it gave an error. See docs/13, section 1.

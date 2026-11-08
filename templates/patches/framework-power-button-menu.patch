@@ -1,0 +1,39 @@
+diff --git a/services/core/java/com/android/server/policy/GlobalActions.java b/services/core/java/com/android/server/policy/GlobalActions.java
+index 76a714c47f2e..3cd9515fcf5c 100644
+--- a/services/core/java/com/android/server/policy/GlobalActions.java
++++ b/services/core/java/com/android/server/policy/GlobalActions.java
+@@ -74,6 +74,11 @@ class GlobalActions implements GlobalActionsProvider.GlobalActionsListener {
+         }
+     }
+ 
++    /** hermes: whether the power menu is open, so a second power press can confirm it. */
++    boolean isShowing() {
++        return mShowing;
++    }
++
+     @Override
+     public void onGlobalActionsShown() {
+         if (DEBUG) Slog.d(TAG, "onGlobalActionsShown");
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index 028fd1db8a12..4c1a881241d0 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -1298,6 +1298,18 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+ 
+         final boolean interactive = mDefaultDisplayPolicy.isAwake();
+ 
++        // hermes: a single press opens the power menu, as on stock, and a press while it's open
++        // confirms power off. Deep sleep can freeze this device with the lamp and fan running,
++        // so the button must not go to sleep.
++        if (count == 1 && interactive) {
++            if (mGlobalActions != null && mGlobalActions.isShowing()) {
++                mWindowManagerFuncs.shutdown(false /* confirm */);
++            } else {
++                showGlobalActionsInternal();
++            }
++            return;
++        }
++
+         Slog.d(
+                 TAG,
+                 "powerPress: eventTime="

@@ -103,6 +103,24 @@ Two rules install the same file. "Previously defined at" tells you the other own
 | `LOCAL_PREBUILT_JNI_LIBS` builds fine, but the app is missing on the device | The build rewrote the APK, breaking its signature | Not a build error: `LOCAL_REPLACE_PREBUILT_APK_INSTALLED`, in `tools/80-apps.py` |
 | Build passes, but `CANNOT LINK` on device after making a module a prebuilt | A prebuilt doesn't pull in dependencies | Add each to `PRODUCT_PACKAGES` by hand |
 
+## Framework patches
+
+| Error | Cause | Fix |
+|---|---|---|
+| `error: method does not override or implement a method from a supertype` | A new method was inserted between an `@Override` and the method it belonged to | Put new methods above the `@Override` line |
+
+## Your changes didn't reach the images
+
+**The build can succeed and still contain the old settings.** Check each change in `out/` before flashing: `strings vendor_boot.img | grep <cmdline word>`, `grep` the installed `.rc` and `build.prop`, `unzip -p <zip> <file>`, `dexdump -d` a jar for a changed method, `aapt2 dump resources` for an overlay.
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| Edits in your git repo have no effect | The build tree has its own copy of the device tree | Sync it: `rsync -a --delete REPO/ TREE/device/<vendor>/<codename>/`, then `diff -rq` |
+| Synced, still no effect; new files in the same sync did work | **`rsync -a` kept the old timestamps**, older than `out/build-<product>.ninja`, so make didn't re-read them | `touch` each changed file after syncing |
+| Command line or vendor property change missing | `vendor_boot.img` and `vendor/build.prop` weren't rebuilt | Delete them and `obj/PACKAGING/vendor_boot_intermediates`, then build |
+| Boot animation unchanged | The generated zip is cached | Delete `obj/BOOTANIMATION` and `product/media/bootanimation.zip` |
+| Old images flashed after a failed build | A script ignored the build's exit code. Nothing broke only because they were the previous working build | Stop on a non-zero exit, and check the images as above |
+
 ## Host tools
 
 | Error | Fix |

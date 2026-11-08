@@ -185,3 +185,15 @@ Keep these safe, ideally in more than one place:
 - This repository.
 - `devices/*/`, which holds decisions and notes, and isn't in git.
 - Device backups, stored separately, since git ignores them. **They're private.**
+
+## Measuring startup and power-off yourself
+
+Once the device works, the agent can tune it (`docs/13-TUNING.md`). To judge the result as you experience it, use the stopwatch scripts in `tools/measure/`. You press SPACE at moments only you can see or hear, and **the total uses only your presses**:
+
+- `tools/measure/startup-timer.sh`: with the device off and USB connected, press SPACE with the power button, then again when the home screen appears.
+- `tools/measure/shutdown-marks.sh`: with the device on, press SPACE with the power button that turns it off, when the picture goes dark, and when the fan stops. It sends nothing to the device.
+
+Each run is saved to a `.csv` next to the script. Run each a few times, as a hand press is a few tenths of a second off either way. Give the agent the output: it also shows Android's own timings, which point to where the time went.
+
+**When to unplug:** on the first device, a shutdown takes about 10 s. If the agent kept the fan running until the power goes off (`templates/power/`), wait until the fan stops.
+

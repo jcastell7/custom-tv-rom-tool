@@ -12,4 +12,6 @@ LOCAL_SRC_FILES := custom-removed-apps.txt
 LOCAL_OVERRIDES_MODULES := Settings \
     TeleService Dialer Contacts messaging MmsService WAPPushManager Stk ONS EmergencyInfo CallLogBackup \
     ImsServiceEntitlement CarrierConfig CarrierDefaultApp CellBroadcastLegacyApp com.android.cellbroadcast rild
+# Optional: add blank_screen if the device has no lights HAL. It runs at shutdown, waits about 2 s and fails.
+# Removing it didn't speed up shutdown on the first device (docs/13, 4c), so it's only tidying.
 include $(BUILD_PREBUILT)

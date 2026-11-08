@@ -115,6 +115,10 @@ def check_bootconfig(a, O):
             warn(f"cmdline.missing.{k.split('=')[0]}", f"stock vendor cmdline has '{k}', this build doesn't")
         for k in sorted(oo - so):
             info(f"cmdline adds '{k}'")
+        if not any(k.startswith("loglevel=") for k in oo):
+            info("vendor cmdline sets no loglevel. If the bootloader passes a high one (hermes: loglevel=8) and a UART "
+                 "console is configured, every kernel message waits for the serial port: loglevel=4 saved 6 s of boot "
+                 "there (docs/13, 3d)")
         if "printk.devkmsg=on" in oo:
             warn("cmdline.devkmsg", "printk.devkmsg=on sends userspace logs to the kernel log. With a UART console at a high log level this can slow boot enough to time out drivers (hermes lost Wi-Fi and Bluetooth). Lower the console level before drivers load.")
 

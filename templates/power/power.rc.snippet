@@ -1,0 +1,14 @@
+# Power behaviour for a TV device that is always switched off at the mains. Add to your vendor .rc file.
+# From the first device. See docs/13-TUNING.md, section 5. Adapt the sysfs paths and the swap file path.
+
+on boot
+    # Deep sleep froze the first device with the lamp and fan running, and only a power cut recovered it.
+    # A kernel wake lock held from boot means it never suspends. The power menu turns it off.
+    write /sys/power/wake_lock tv_no_suspend
+
+# The lamp has its own switch, separate from /sys/class/backlight. Stock's framework turned it off at shutdown.
+# The fan is left running until the power goes off, so the fan stopping tells the user it's safe to unplug.
+on property:sys.shutdown.requested=*
+    write /sys/class/backlightandfan/backlight/value 0
+    # An active swap file on /data can stop /data unmounting at shutdown.
+    exec_background - root root -- /system/bin/swapoff /data/vendor/swapfile

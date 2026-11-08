@@ -181,10 +181,18 @@ In this order, because each helps you debug the next:
 
 Do this last, after a stable build. `tools/90-root-patch.sh`. It's the riskiest step after the first flash, so check your rescue route is still valid first.
 
-## Phase 10: Finish (1 hour)
+## Phase 10: Tune (half a day)
+
+Follow [`13-TUNING.md`](13-TUNING.md). In short:
+- **Measure first:** `tools/76-boot-profile.py` for each boot, and `tools/measure/` for the user's own stopwatch. Never trust the first boot after a flash.
+- **Remove bring-up items in two flashes:** first `printk.devkmsg=on` and `ro.adb.secure=0`, then the watchdog and auto-fastbootd. Keep `androidboot.init_fatal_reboot_target=recovery`.
+- **Boot time:** check the kernel console log level, shader cache priming (`WaitForDisplay`), and the boot animation's last part. Together these took the first device from 65.6 s to about 33.6 s.
+- **Power button:** find out what stock did, and where the lamp and fan switches are. Don't leave a short press putting the device into a deep sleep nobody has tested.
+
+## Phase 11: Finish (1 hour)
 
 Before calling it done:
-- Remove bring-up items: watchdog, auto-fastbootd, `ro.adb.secure=0`, `printk.devkmsg=on`.
+- Check that the Phase 10 removals happened.
 - Decide about SELinux. Permissive with a placeholder policy isn't production-ready.
 - Test a boot from a full wipe, with the final build.
 - Walk through the Phase 0 list with the user. Only they can confirm that a feature works.

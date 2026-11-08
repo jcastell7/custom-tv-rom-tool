@@ -84,6 +84,18 @@ R = [
   "The Android-side watchdog can't help here. You need UART, and possibly the rescue route. Check the stock kernel is being used unchanged."),
  (r"prefetch abort|data abort", "Bootloader crash",
   "A u-boot command overran memory or ran with bad parameters. Read docs/03 before retrying anything."),
+ (r"WaitForDisplay took to complete: \d{4,}ms|DisplayManagerService took \d{4,} ms in onBootPhase", "Boot waits seconds for the display",
+  "Often not the display. Capture stacks during the wait with tools/78-boot-stacks.sh. On hermes, SurfaceFlinger's RenderEngine was compiling shaders in the Mali driver: service.sf.prime_shader_cache=0 saved 9 s (docs/13, 3b)."),
+ (r"cmpbe_v2_compile_multiple_shaders", "GPU driver compiling shaders",
+  "Seen in a SurfaceFlinger stack during boot. Shader cache priming blocks composition on a slow CPU: try service.sf.prime_shader_cache=0 (docs/13, 3b)."),
+ (r"su: request rejected \(\d+\)", "Magisk denied root without asking",
+  "Magisk 31.1 has no prompt: an app with no stored policy is rejected. Grant it in Magisk's Superuser tab, or add a row to the policies table (docs/05, Root)."),
+ (r"ADB Root access is disabled by system setting", "adb root disabled",
+  "LineageOS's Rooted debugging toggle, in Developer options. Ask the user."),
+ (r"Service 'blank_screen' .*exited with status 255|cannot find blank_screen", "blank_screen failed at shutdown",
+  "No lights HAL. Harmless: removing it didn't speed up shutdown on hermes (docs/13, 4c)."),
+ (r"So far shutdown sequence took \d+ms|Waiting for \d+ pids to be reaped took", "Shutdown timing from init",
+  "Not an error: init's own timing of the shutdown. Compare it between builds (docs/13, section 4)."),
 ]
 
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+")

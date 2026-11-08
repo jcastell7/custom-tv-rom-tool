@@ -18,7 +18,7 @@ Go through this with them, and record what they use:
 | Network | Wi-Fi, Ethernet, hotspot |
 | Casting | AirPlay, Miracast, Chromecast |
 | Tools | Factory or test menu, file manager, updater, boot logo |
-| Power | Standby behaviour, what the power button does, auto power on |
+| Power | What a short and a long press of power do (a menu? sleep?), whether the lamp and fan turn off, standby, auto power on. **Does the user unplug it after use?** |
 | Storage | USB drives, SD |
 
 Save stock's state, which you can't get back afterwards:
@@ -89,6 +89,15 @@ Before you patch the framework, see if a small system app can do it. For anythin
 
 Patch the framework only for things an app can't do, like input mapping. Keep patches small, and save them.
 
+### Switches stock's framework writes
+
+Stock framework code often writes sysfs files directly, for hardware AOSP knows nothing about. Search for them:
+```bash
+unzip services.jar 'classes*.dex' -d s; for d in s/*.dex; do dexdump -d "$d"; done > dump.txt
+grep -n 'const-string.*"/sys/' dump.txt
+```
+For each hit, find the method around it and what calls it. On the first device this found the lamp and fan switches, written by `ShutdownThread`. Without them the lamp stayed on in sleep, and at shutdown until the power went. Check the device tree for the driver too: `ls /proc/device-tree`, and look for `fan`, `backlight` or `led`.
+
 ### Key layouts
 
 Stock's `.kl` files can name keycodes that only its own framework defines. **A single unknown name rejects the entire file**, with `Generic.kl` used instead. To check:
@@ -121,6 +130,7 @@ When a user reports "X doesn't work", check the logs before concluding where the
 | Factory menu | `AwTvFactoryMenu` | App re-signed, library |
 | IR remote | `sunxi-ir` kernel driver, `.kl` | Fixed `.kl` |
 | Right click as Back | Stock framework change | One-line input patch |
+| Power menu on a short press, lamp off at shutdown | Stock framework: `PhoneWindowManager.powerPress`, `ShutdownThread` writing `/sys/class/backlightandfan/*` | Framework patch, `.rc` lines, suspend blocked: `templates/power/` |
 | Bluetooth, Wi-Fi | Seekwave chip | See the debug catalog |
 
 Status of these on the first device when this was written: installed and registered, but the user hadn't yet confirmed every one. See the case study.

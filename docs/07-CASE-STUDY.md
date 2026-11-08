@@ -69,11 +69,20 @@ Most of the time went on the initial rescue, which should never have been needed
 
 ## Status when this was written
 
-**Verified on hardware:** boot to home screen, picture, Wi-Fi scanning, Bluetooth on and finding the remote, IR key events, zram and the swap file, recovery fallback, fastbootd, Magisk daemon running, flashes that keep user data.
+**Verified on hardware:** boot to home screen, picture, Wi-Fi scanning, Bluetooth on and finding the remote, IR key events, zram and the swap file, recovery fallback (while it existed), fastbootd, Magisk daemon running, flashes that keep user data.
 
-**Installed, but not confirmed working by the user at the time of writing:** Google login, full F-Droid install, keystone actually moving the picture, HDMI picture and sound, right click as Back, AdAway using root, Symfonium activation.
+**Confirmed by the user later:** Google sign-in, Bluetooth pairing a remote, AdAway detecting root, the power menu on a short press, the second press powering off (measured with `tools/measure/shutdown-timer.sh`), menus without visible stutter after shader priming was turned off.
 
-**Not done:** autofocus (its service wasn't found in stock's app list), stock's framework overlay, audio warnings cleanup, production SELinux, removing bring-up items.
+**Measured after tuning (docs/13):**
+- **Boot:** kernel start to the end of the boot animation, 65.6 s down to about 33.6 s.
+- **Startup, by the user's stopwatch:** pressing power to Android reporting boot completed, 43 to 47 s. These runs came before the uptime fix, so their bootloader split was wrong, but the totals were measured on the PC.
+- **Power-off:** 9.6 s from confirming to the fan stopping.
+
+**Removed after bring-up:** `printk.devkmsg`, `ro.adb.secure=0`, the boot watchdog and auto-fastbootd. Kept: `init_fatal_reboot_target=recovery`.
+
+**Installed, but not confirmed working by the user at the time of writing:** full F-Droid install, keystone actually moving the picture, HDMI picture and sound, right click as Back, AdAway blocking ads after the Systemless Hosts fix, Symfonium activation.
+
+**Not done:** autofocus (its service wasn't found in stock's app list), stock's framework overlay, audio warnings cleanup, production SELinux.
 
 ## The lessons, in order of importance
 

@@ -41,3 +41,6 @@ __pycache__/
 precompiled_sepolicy
 proprietary/
 prebuilt/
+
+# Timing results from tools/measure: personal measurements, not part of the toolkit.
+tools/measure/*.csv
